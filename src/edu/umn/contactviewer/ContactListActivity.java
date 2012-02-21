@@ -2,10 +2,15 @@ package edu.umn.contactviewer;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +21,29 @@ import android.widget.AdapterView.*;
  *
  */
 public class ContactListActivity extends ListActivity {
-    @Override
+	private String contact_name;
+	private String contact_phone;
+	private String contact_title;
+	private String contact_email;
+	private String contact_twitterId;
+	
+	public String toJSON(){		
+		JSONObject jsonobj = new JSONObject();
+    	  try {
+  		
+  		jsonobj.put("name", contact_name);
+  		jsonobj.put("phone", contact_phone);
+  		jsonobj.put("title", contact_title);
+  		jsonobj.put("email", contact_email);
+  		jsonobj.put("twitterId", contact_twitterId);
+
+  	} catch (JSONException e) {
+  		
+  		Log.e("Contact Retrieval","Error building JSON: " + jsonobj, e);
+  	}   	
+      return jsonobj.toString();
+	}
+	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list);
@@ -71,28 +98,25 @@ public class ContactListActivity extends ListActivity {
         lv.setTextFilterEnabled(true);
         
         // handle the item click events
-        lv.setOnItemClickListener(new OnItemClickListener() {
+        lv.setOnItemClickListener(new OnItemClickListener(){
         	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				// When clicked, show a toast with the TextView text
 				//Toast.makeText(getApplicationContext(), 
 					//"Clicked: " + ((ContactAdapter)getListAdapter()).getItem(position).getName(),
 					//Toast.LENGTH_SHORT).show();
   
-          	  String contact_name = ((ContactAdapter)getListAdapter()).getItem(position).getName();
-          	  String contact_phone = ((ContactAdapter)getListAdapter()).getItem(position).getPhone();
-          	  String contact_title = ((ContactAdapter)getListAdapter()).getItem(position).getTitle();
-          	  String contact_email = ((ContactAdapter)getListAdapter()).getItem(position).getEmail();
-        	  
+          	  contact_name = ((ContactAdapter)getListAdapter()).getItem(position).getName();
+          	  contact_phone = ((ContactAdapter)getListAdapter()).getItem(position).getPhone();
+          	  contact_title = ((ContactAdapter)getListAdapter()).getItem(position).getTitle();
+          	  contact_email = ((ContactAdapter)getListAdapter()).getItem(position).getEmail();
+          	  contact_twitterId = ((ContactAdapter)getListAdapter()).getItem(position).getTwitterId();
+          	
+          	  //Serialize contact using JSON object
+          	  String jsonstring = toJSON();
+            		
           	  // Launching new Activity on selecting single List Item
-          	  Intent i = new Intent(getApplicationContext(), ContactDetailActivity.class);
-          	  // sending data to new activity
-          	  i.putExtra("contact_name", contact_name);
-          	  i.putExtra("contact_phone",contact_phone);
-          	  i.putExtra("contact_title", contact_title);
-          	  i.putExtra("contact_email", contact_email);
-          	  
-          	  
-          	  
+          	  Intent i = new Intent(getApplicationContext(), ContactDetailActivity.class);  	  
+          	  i.putExtra("contact", jsonstring);
           	  startActivity(i);		
 				}
 			}
@@ -118,6 +142,7 @@ public class ContactListActivity extends ListActivity {
 			((TextView)item.findViewById(R.id.item_name)).setText(contact.getName());
 			((TextView)item.findViewById(R.id.item_title)).setText(contact.getTitle());
 			((TextView)item.findViewById(R.id.item_phone)).setText(contact.getPhone());
+			
 			
 			return item;
 		}

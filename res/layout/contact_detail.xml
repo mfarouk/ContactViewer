@@ -22,8 +22,9 @@
         android:layout_height="wrap_content"
         android:textSize="18dp"
         android:layout_margin="4dp"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
         android:text="Title"/>
+
 
 <TextView android:id="@+id/item_email"
         android:layout_width="wrap_content"
@@ -40,5 +41,14 @@
         android:layout_margin="4dp"
         android:layout_alignParentBottom="true"
         android:text="Phone"/>
+
+<TextView android:id="@+id/item_twitterId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:layout_margin="4dp"
+        android:layout_alignParentBottom="true"
+        android:text="Twitter ID"/>
+
 
  </LinearLayout>
