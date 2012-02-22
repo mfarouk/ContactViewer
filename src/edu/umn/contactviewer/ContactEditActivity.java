@@ -2,6 +2,7 @@ package edu.umn.contactviewer;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 
 
@@ -32,6 +33,11 @@ public class ContactEditActivity extends Activity {
         // getting attached intent data     
         
 	}
+public void selfDestruct(View view){
+		
+		ContactEditActivity.this.finish();
+		//Destroyed
+		}
     
 
 }
