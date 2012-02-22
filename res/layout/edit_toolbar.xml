@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/detail_toolbar"
+    android:id="@+id/edit_toolbar"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     style="@style/Toolbar">
     
-    <Button android:id="@+id/toolbar_contacts_button"
+    <Button android:id="@+id/toolbar_cancel_button"
         style="@style/ToolbarButton"
-        android:text="@string/contacts"
+        android:text="@string/cancel"
         android:layout_weight="0"
         android:onClick="selfDestruct"/>
     
 	<TextView android:id="@+id/toolbar_title"
 	    style="@style/ToolbarTitle"
-	    android:text="Details"
+	    android:text="Edit"
         android:layout_weight="1"/>
 
 	<Button
-	    android:id="@+id/toolbar_edit_button"
+	    android:id="@+id/toolbar_done_button"
 	    style="@style/ToolbarButton"
 	    android:layout_weight="0"
-	    android:text="@string/edit"
+	    android:text="@string/done"
 	    android:onClick="editContact" />
 
     <Button android:id="@+id/toolbar_right_button"

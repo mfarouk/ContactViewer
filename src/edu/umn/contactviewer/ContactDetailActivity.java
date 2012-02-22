@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 
@@ -57,7 +58,16 @@ public class ContactDetailActivity extends Activity   {
         String jsonstr = i.getStringExtra("contact");
         parseJSON(jsonstr);     
         
-        
 	}
+	public void selfDestruct(View view){
+		
+		ContactDetailActivity.this.finish();
+		//Destroyed
+		}
+	public void editContact(View view)
+	{
+		Intent i = new Intent(getApplicationContext(), ContactEditActivity.class);
+		startActivity(i);
+	
 	}
-
+}

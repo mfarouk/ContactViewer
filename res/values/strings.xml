@@ -6,4 +6,6 @@
     <string name="about">About</string>
     <string name="back">Back</string>
     <string name="edit">Edit</string>
+    <string name="cancel">Cancel</string>
+    <string name="done">Done</string>
 </resources>

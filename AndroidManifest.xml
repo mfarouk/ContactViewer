@@ -30,6 +30,8 @@
         </activity>
         <activity android:name="ContactDetailActivity">
             </activity>
+        <activity android:name="ContactEditActivity">
+            </activity>
     </application>
 
 </manifest>

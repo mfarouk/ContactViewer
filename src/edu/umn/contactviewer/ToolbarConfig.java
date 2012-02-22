@@ -27,7 +27,7 @@ public class ToolbarConfig {
         }
 	}
     
-    /** Returns true if this activity's content view has a toolabr.
+    /** Returns true if this activity's content view has a toolbar.
      */
     public boolean hasToolbar() {
     	return _activity.findViewById(R.id.toolbar) != null;
