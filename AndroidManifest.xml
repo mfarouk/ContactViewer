@@ -28,9 +28,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="ContactDetailActivity">
+        <activity 
+            android:name="ContactDetailActivity"
+            android:theme="@style/MnTheme">
             </activity>
-        <activity android:name="ContactEditActivity">
+        <activity 
+            android:name="ContactEditActivity"
+            android:theme="@style/MnTheme">
             </activity>
     </application>
 
