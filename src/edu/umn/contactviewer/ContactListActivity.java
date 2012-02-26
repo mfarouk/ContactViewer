@@ -43,6 +43,12 @@ public class ContactListActivity extends ListActivity {
   	}   	
       return jsonobj.toString();
 	}
+	public void newContact(View view)
+	{
+		Intent i = new Intent(getApplicationContext(), ContactNewActivity.class);
+		startActivity(i);
+	
+	}
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

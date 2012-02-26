@@ -2,9 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/item_background" >
- 
+    android:orientation="vertical" >
+    
 <include layout="@layout/edit_toolbar"
         android:layout_weight="0"/>
 <EditText
@@ -48,12 +47,6 @@
         android:layout_margin="4dp"
         android:layout_alignParentBottom="true"
         android:text="Twitter ID"/>
-
-<Button
-    android:id="@+id/delete_contact"
-    style="@style/ToolbarButton"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:text="@string/delete_contact" />
+    
 
 </LinearLayout>

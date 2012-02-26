@@ -8,4 +8,6 @@
     <string name="edit">Edit</string>
     <string name="cancel">Cancel</string>
     <string name="done">Done</string>
+    <string name="new_contact">New</string>
+    <string name="delete_contact">Delete Contact</string>
 </resources>
