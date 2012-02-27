@@ -3,15 +3,15 @@ package edu.umn.contactviewer;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import android.app.Activity;
 import android.content.SharedPreferences;
+import android.preference.PreferenceActivity;
 import android.util.Log;
 
-public class ContactRep extends Activity {
+public class ContactRep extends PreferenceActivity {
 	private static String jsonstr;
 	public String name,phone,title,email,twitterId;
 	public static final String Current_Contact = "ContactFile";
-	SharedPreferences sp;
+	public SharedPreferences sp;
 	SharedPreferences.Editor spedit;
 	static Contact contact;
 	public static String toJSON(Contact contact){
@@ -34,7 +34,7 @@ public class ContactRep extends Activity {
 		try {
 			jsonret = new JSONObject(jsonstr);
 			contact = new Contact(jsonret.getString("name"));
-			contact.setName(jsonret.getString("name"));
+			//contact.setName(jsonret.getString("name"));
         	contact.setPhone(jsonret.getString("phone"));
         	contact.setTitle(jsonret.getString("title"));
         	contact.setEmail(jsonret.getString("email"));
@@ -47,22 +47,23 @@ public class ContactRep extends Activity {
 	}
 	
 	public void saveContact(Contact contact){
-		sp = getSharedPreferences(Current_Contact, MODE_PRIVATE);
+		System.out.println("Hello");
+		sp = getPreferences(MODE_PRIVATE);
 		spedit = sp.edit();
-		spedit.putString(contact.getEmail(),jsonstr);
-		spedit.commit();	
-		
+		//jsonstr = toJSON(contact);
+		//spedit.putString(contact.getEmail(),jsonstr);
+		//spedit.commit();	
 	}
 	public void deleteContact(){
 		
 	}
 	
-	//public String getContact(){
-	//	jsonget=sp.getAll();
-	//	String s;
-	//	return s;
+	public Contact getContact(){
+		jsonstr=sp.getString(contact.getEmail(),"Contact Not Found");
+		contact=parseJSON(jsonstr);
+		return contact;
 		
-	//}
+	}
 	
 	
 

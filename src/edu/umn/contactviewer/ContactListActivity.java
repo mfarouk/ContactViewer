@@ -2,9 +2,12 @@ package edu.umn.contactviewer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +20,8 @@ import android.widget.AdapterView.*;
  */
 public class ContactListActivity extends ListActivity {
 	Contact contact;
+	//final ArrayList<HashMap<String,String>> LIST = new ArrayList<HashMap<String,String>>();
+	ContactRep crep;
 	public void newContact(View view)
 	{
 		Intent i = new Intent(getApplicationContext(), ContactNewActivity.class);
@@ -28,10 +33,20 @@ public class ContactListActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list);
         new ToolbarConfig(this, "Contacts");
-        
-        // make some contacts
         ArrayList<Contact> contacts = new ArrayList<Contact>();
-        contacts.add(new Contact("Malcom Reynolds")
+        SharedPreferences sp = getSharedPreferences(ContactEditActivity.APP_SHARED_PREFS,ContactEditActivity.MODE_PRIVATE);
+    	Map<String,?> items=sp.getAll();
+    	crep=new ContactRep();
+    	contact=new Contact("RandonName");
+    	for(String s : items.keySet()){ 
+    	    contact=crep.parseJSON(items.get(s).toString());
+    	    contacts.add(contact);
+    	}
+    	
+        
+    	// make some contacts - Hard Coded Contacts, could be used for first time fill up of db
+        
+        /*contacts.add(new Contact("Malcom Reynolds")
     		.setEmail("mal@serenity.com")
     		.setTitle("Captain")
     		.setPhone("612-555-1234")
@@ -70,9 +85,11 @@ public class ContactListActivity extends ListActivity {
 			.setEmail("shepherd@serenity.com")
 			.setTitle("Shepherd")
 			.setPhone("612-555-2109")
-			.setTwitterId("shepherdbook"));
+			.setTwitterId("shepherdbook"));*/
+
         
         // initialize the list view
+    	
         setListAdapter(new ContactAdapter(this, R.layout.list_item, contacts));
         ListView lv = getListView();
         lv.setTextFilterEnabled(true);
@@ -115,7 +132,6 @@ public class ContactListActivity extends ListActivity {
 			((TextView)item.findViewById(R.id.item_name)).setText(contact.getName());
 			((TextView)item.findViewById(R.id.item_title)).setText(contact.getTitle());
 			((TextView)item.findViewById(R.id.item_phone)).setText(contact.getPhone());
-			
 			
 			return item;
 		}

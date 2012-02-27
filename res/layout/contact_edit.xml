@@ -54,6 +54,7 @@
     style="@style/ToolbarButton"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
+    android:onClick="deleteContact"
     android:text="@string/delete_contact" />
 
 </LinearLayout>

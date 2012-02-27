@@ -33,14 +33,20 @@ public class ContactDetailActivity extends Activity   {
         Intent i = getIntent();
         
         // getting attached intent data
-        jsonstr = i.getStringExtra("contact");
-        ContactRep crep=new ContactRep();
-        contact=crep.parseJSON(jsonstr);
-        name_textView.setText(contact.getName());
-		phone_textView.setText(contact.getPhone());
-		title_textView.setText(contact.getTitle());
-		email_textView.setText(contact.getEmail());
-		twitter_textView.setText(contact.getTwitterId());
+        try{
+        	jsonstr = i.getStringExtra("contact");
+            ContactRep crep=new ContactRep();
+            contact=crep.parseJSON(jsonstr);
+            name_textView.setText(contact.getName());
+    		phone_textView.setText(contact.getPhone());
+    		title_textView.setText(contact.getTitle());
+    		email_textView.setText(contact.getEmail());
+    		twitter_textView.setText(contact.getTwitterId());
+        	
+        } catch (Exception e){
+        	e.printStackTrace();
+        }
+        
 	}
 	public void selfDestruct(View view){
 		
