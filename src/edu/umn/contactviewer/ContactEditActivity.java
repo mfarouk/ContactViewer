@@ -1,6 +1,7 @@
 package edu.umn.contactviewer;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -14,6 +15,8 @@ public class ContactEditActivity extends Activity {
     EditText title_editText;
     EditText email_editText;
     EditText twitter_editText;
+    String jsonstr;
+    Contact contact;
    
     
     @Override
@@ -28,9 +31,17 @@ public class ContactEditActivity extends Activity {
         email_editText = (EditText)findViewById(R.id.item_email);
         twitter_editText = (EditText)findViewById(R.id.item_twitterId);
         
-        //Intent i = getIntent();
+        Intent i = getIntent();
         
-        // getting attached intent data     
+        jsonstr = i.getStringExtra("contact");
+        ContactRep crep=new ContactRep();
+        contact=crep.parseJSON(jsonstr);    
+        
+        name_editText.setText(contact.getName());
+		phone_editText.setText(contact.getPhone());
+		title_editText.setText(contact.getTitle());
+		email_editText.setText(contact.getEmail());
+		twitter_editText.setText(contact.getTwitterId());  
         
 	}
 public void selfDestruct(View view){

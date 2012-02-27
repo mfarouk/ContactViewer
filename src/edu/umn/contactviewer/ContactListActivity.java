@@ -2,15 +2,10 @@ package edu.umn.contactviewer;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,28 +16,7 @@ import android.widget.AdapterView.*;
  *
  */
 public class ContactListActivity extends ListActivity {
-	private String contact_name;
-	private String contact_phone;
-	private String contact_title;
-	private String contact_email;
-	private String contact_twitterId;
-	
-	public String toJSON(){		
-		JSONObject jsonobj = new JSONObject();
-    	  try {
-  		
-  		jsonobj.put("name", contact_name);
-  		jsonobj.put("phone", contact_phone);
-  		jsonobj.put("title", contact_title);
-  		jsonobj.put("email", contact_email);
-  		jsonobj.put("twitterId", contact_twitterId);
-
-  	} catch (JSONException e) {
-  		
-  		Log.e("Contact Retrieval","Error building JSON: " + jsonobj, e);
-  	}   	
-      return jsonobj.toString();
-	}
+	Contact contact;
 	public void newContact(View view)
 	{
 		Intent i = new Intent(getApplicationContext(), ContactNewActivity.class);
@@ -109,17 +83,10 @@ public class ContactListActivity extends ListActivity {
 				// When clicked, show a toast with the TextView text
 				//Toast.makeText(getApplicationContext(), 
 					//"Clicked: " + ((ContactAdapter)getListAdapter()).getItem(position).getName(),
-					//Toast.LENGTH_SHORT).show();
-  
-          	  contact_name = ((ContactAdapter)getListAdapter()).getItem(position).getName();
-          	  contact_phone = ((ContactAdapter)getListAdapter()).getItem(position).getPhone();
-          	  contact_title = ((ContactAdapter)getListAdapter()).getItem(position).getTitle();
-          	  contact_email = ((ContactAdapter)getListAdapter()).getItem(position).getEmail();
-          	  contact_twitterId = ((ContactAdapter)getListAdapter()).getItem(position).getTwitterId();
-          	
+					//Toast.LENGTH_SHORT).show();     	
           	  //Serialize contact using JSON object
-          	  String jsonstring = toJSON();
-            		
+          	  contact = ((ContactAdapter)getListAdapter()).getItem(position);
+          	  String jsonstring = ContactRep.toJSON(contact); 
           	  // Launching new Activity on selecting single List Item
           	  Intent i = new Intent(getApplicationContext(), ContactDetailActivity.class);  	  
           	  i.putExtra("contact", jsonstring);
