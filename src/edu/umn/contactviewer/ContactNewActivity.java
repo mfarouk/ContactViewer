@@ -43,7 +43,7 @@ public class ContactNewActivity extends Activity {
         contact.setEmail(String.valueOf(email_editText.getText()));
         contact.setTwitterId(String.valueOf(twitter_editText.getText()));
 
-        String jsonstr = ContactRep.toJSON(contact);
+        String jsonstr = ContactRepository.toJSON(contact);
         spedit.putString(contact.getEmail(), jsonstr);
         spedit.commit();
         Intent i = new Intent(getApplicationContext(), ContactListActivity.class);

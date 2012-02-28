@@ -21,7 +21,7 @@ public class ContactListActivity extends ListActivity {
     Contact contact;
     // final ArrayList<HashMap<String,String>> LIST = new
     // ArrayList<HashMap<String,String>>();
-    ContactRep crep;
+    ContactRepository crep;
 
     public void newContact(View view) {
         Intent i = new Intent(getApplicationContext(), ContactNewActivity.class);
@@ -37,7 +37,7 @@ public class ContactListActivity extends ListActivity {
         SharedPreferences sp = getSharedPreferences(ContactEditActivity.APP_SHARED_PREFS,
                 ContactEditActivity.MODE_PRIVATE);
         Map<String, ?> items = sp.getAll();
-        crep = new ContactRep();
+        crep = new ContactRepository();
         contact = new Contact("RandonName");
         for (String s : items.keySet()) {
             contact = crep.parseJSON(items.get(s).toString());
@@ -88,7 +88,7 @@ public class ContactListActivity extends ListActivity {
                 // Toast.LENGTH_SHORT).show();
                 // Serialize contact using JSON object
                 contact = ((ContactAdapter) getListAdapter()).getItem(position);
-                String jsonstring = ContactRep.toJSON(contact);
+                String jsonstring = ContactRepository.toJSON(contact);
                 // Launching new Activity on selecting single List Item
                 Intent i = new Intent(getApplicationContext(), ContactDetailActivity.class);
                 i.putExtra("contact", jsonstring);

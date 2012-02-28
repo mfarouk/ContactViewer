@@ -32,7 +32,7 @@ public class ContactDetailActivity extends Activity {
         // getting attached intent data
         try {
             jsonstr = i.getStringExtra("contact");
-            ContactRep crep = new ContactRep();
+            ContactRepository crep = new ContactRepository();
             contact = crep.parseJSON(jsonstr);
             name_textView.setText(contact.getName());
             phone_textView.setText(contact.getPhone());

@@ -18,7 +18,7 @@ public class ContactEditActivity extends Activity {
     EditText twitter_editText;
     String jsonstr = null;
     Contact contact;
-    ContactRep crep;
+    ContactRepository crep;
     SharedPreferences sp;
     SharedPreferences.Editor spedit;
     public static final String APP_SHARED_PREFS = "Shared_Prefs_file";
@@ -38,7 +38,7 @@ public class ContactEditActivity extends Activity {
         Intent i = getIntent();
 
         jsonstr = i.getStringExtra("contact");
-        ContactRep crep = new ContactRep();
+        ContactRepository crep = new ContactRepository();
         contact = crep.parseJSON(jsonstr);
 
         name_editText.setText(contact.getName());
@@ -61,7 +61,7 @@ public class ContactEditActivity extends Activity {
         contact.setTitle(String.valueOf(title_editText.getText()));
         contact.setEmail(String.valueOf(email_editText.getText()));
         contact.setTwitterId(String.valueOf(twitter_editText.getText()));
-        jsonstr = ContactRep.toJSON(contact);
+        jsonstr = ContactRepository.toJSON(contact);
         spedit.putString(contact.getEmail(), jsonstr);
         spedit.commit();
         Intent i = new Intent(getApplicationContext(), ContactListActivity.class);
