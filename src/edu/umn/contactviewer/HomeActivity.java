@@ -16,7 +16,6 @@ public class HomeActivity extends Activity implements OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-
         findViewById(R.id.contacts_button).setOnClickListener(this);
     }
 

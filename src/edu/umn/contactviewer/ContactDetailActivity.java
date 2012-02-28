@@ -8,37 +8,35 @@ import android.widget.TextView;
 
 public class ContactDetailActivity extends Activity {
 
-    TextView name_textView;
-    TextView phone_textView;
-    TextView title_textView;
-    TextView email_textView;
-    TextView twitter_textView;
-    String jsonstr;
-    Contact contact;
+    private TextView nameView;
+    private TextView phoneView;
+    private TextView titleView;
+    private TextView emailView;
+    private TextView twitterView;
+    private String contactJson;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.contact_detail);
 
-        name_textView = (TextView) findViewById(R.id.item_name);
-        phone_textView = (TextView) findViewById(R.id.item_phone);
-        title_textView = (TextView) findViewById(R.id.item_title);
-        email_textView = (TextView) findViewById(R.id.item_email);
-        twitter_textView = (TextView) findViewById(R.id.item_twitterId);
+        nameView = (TextView) findViewById(R.id.item_name);
+        phoneView = (TextView) findViewById(R.id.item_phone);
+        titleView = (TextView) findViewById(R.id.item_title);
+        emailView = (TextView) findViewById(R.id.item_email);
+        twitterView = (TextView) findViewById(R.id.item_twitterId);
 
-        Intent i = getIntent();
+        Intent intent = getIntent();
 
         // getting attached intent data
         try {
-            jsonstr = i.getStringExtra("contact");
-            ContactRepository crep = new ContactRepository();
-            contact = crep.parseJSON(jsonstr);
-            name_textView.setText(contact.getName());
-            phone_textView.setText(contact.getPhone());
-            title_textView.setText(contact.getTitle());
-            email_textView.setText(contact.getEmail());
-            twitter_textView.setText(contact.getTwitterId());
+            contactJson = intent.getStringExtra("contact");
+            Contact contact = ContactRepository.parseJSON(contactJson);
+            nameView.setText(contact.getName());
+            phoneView.setText(contact.getPhone());
+            titleView.setText(contact.getTitle());
+            emailView.setText(contact.getEmail());
+            twitterView.setText(contact.getTwitterId());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -52,9 +50,9 @@ public class ContactDetailActivity extends Activity {
     }
 
     public void editContact(View view) {
-        Intent i = new Intent(getApplicationContext(), ContactEditActivity.class);
-        i.putExtra("contact", jsonstr);
-        startActivity(i);
+        Intent intent = new Intent(getApplicationContext(), ContactEditActivity.class);
+        intent.putExtra("contact", contactJson);
+        startActivity(intent);
     }
-    
+
 }

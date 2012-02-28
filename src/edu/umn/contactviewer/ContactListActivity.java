@@ -18,14 +18,12 @@ import android.widget.AdapterView.*;
  * Displays a list of contacts.
  */
 public class ContactListActivity extends ListActivity {
-    Contact contact;
     // final ArrayList<HashMap<String,String>> LIST = new
     // ArrayList<HashMap<String,String>>();
-    ContactRepository crep;
 
     public void newContact(View view) {
-        Intent i = new Intent(getApplicationContext(), ContactNewActivity.class);
-        startActivity(i);
+        Intent contactNewIntent = new Intent(getApplicationContext(), ContactNewActivity.class);
+        startActivity(contactNewIntent);
     }
 
     @Override
@@ -37,10 +35,8 @@ public class ContactListActivity extends ListActivity {
         SharedPreferences sp = getSharedPreferences(ContactEditActivity.APP_SHARED_PREFS,
                 ContactEditActivity.MODE_PRIVATE);
         Map<String, ?> items = sp.getAll();
-        crep = new ContactRepository();
-        contact = new Contact("RandonName");
         for (String s : items.keySet()) {
-            contact = crep.parseJSON(items.get(s).toString());
+            Contact contact = ContactRepository.parseJSON(items.get(s).toString());
             contacts.add(contact);
         }
 
@@ -87,12 +83,12 @@ public class ContactListActivity extends ListActivity {
                 // ((ContactAdapter)getListAdapter()).getItem(position).getName(),
                 // Toast.LENGTH_SHORT).show();
                 // Serialize contact using JSON object
-                contact = ((ContactAdapter) getListAdapter()).getItem(position);
-                String jsonstring = ContactRepository.toJSON(contact);
+                Contact contact = ((ContactAdapter) getListAdapter()).getItem(position);
+                String contactJson = ContactRepository.toJSON(contact);
                 // Launching new Activity on selecting single List Item
-                Intent i = new Intent(getApplicationContext(), ContactDetailActivity.class);
-                i.putExtra("contact", jsonstring);
-                startActivity(i);
+                Intent contactDetailIntent = new Intent(getApplicationContext(), ContactDetailActivity.class);
+                contactDetailIntent.putExtra("contact", contactJson);
+                startActivity(contactDetailIntent);
             }
         });
     }

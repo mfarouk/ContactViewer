@@ -4,23 +4,20 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
 public class ContactEditActivity extends Activity {
 
-    EditText name_editText;
-    EditText phone_editText;
-    EditText title_editText;
-    EditText email_editText;
-    EditText twitter_editText;
-    String jsonstr = null;
-    Contact contact;
-    ContactRepository crep;
-    SharedPreferences sp;
-    SharedPreferences.Editor spedit;
+    private EditText nameView;
+    private EditText phoneView;
+    private EditText titleView;
+    private EditText emailView;
+    private EditText twitterView;
+    private String contactJson = null;
+    private Contact contact;
     public static final String APP_SHARED_PREFS = "Shared_Prefs_file";
 
     @Override
@@ -28,24 +25,23 @@ public class ContactEditActivity extends Activity {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.contact_edit);
 
-        name_editText = (EditText) findViewById(R.id.item_name);
-        phone_editText = (EditText) findViewById(R.id.item_phone);
-        title_editText = (EditText) findViewById(R.id.item_title);
-        email_editText = (EditText) findViewById(R.id.item_email);
-        twitter_editText = (EditText) findViewById(R.id.item_twitterId);
+        nameView = (EditText) findViewById(R.id.item_name);
+        phoneView = (EditText) findViewById(R.id.item_phone);
+        titleView = (EditText) findViewById(R.id.item_title);
+        emailView = (EditText) findViewById(R.id.item_email);
+        twitterView = (EditText) findViewById(R.id.item_twitterId);
 
         contact = new Contact("RandomName");
-        Intent i = getIntent();
+        Intent intent = getIntent();
 
-        jsonstr = i.getStringExtra("contact");
-        ContactRepository crep = new ContactRepository();
-        contact = crep.parseJSON(jsonstr);
+        contactJson = intent.getStringExtra("contact");
+        contact = ContactRepository.parseJSON(contactJson);
 
-        name_editText.setText(contact.getName());
-        phone_editText.setText(contact.getPhone());
-        title_editText.setText(contact.getTitle());
-        email_editText.setText(contact.getEmail());
-        twitter_editText.setText(contact.getTwitterId());
+        nameView.setText(contact.getName());
+        phoneView.setText(contact.getPhone());
+        titleView.setText(contact.getTitle());
+        emailView.setText(contact.getEmail());
+        twitterView.setText(contact.getTwitterId());
 
     }
 
@@ -55,17 +51,16 @@ public class ContactEditActivity extends Activity {
     }
 
     public void commitContact(View view) {
-        sp = getSharedPreferences(APP_SHARED_PREFS, MODE_PRIVATE);
-        spedit = sp.edit();
-        contact.setPhone(String.valueOf(phone_editText.getText()));
-        contact.setTitle(String.valueOf(title_editText.getText()));
-        contact.setEmail(String.valueOf(email_editText.getText()));
-        contact.setTwitterId(String.valueOf(twitter_editText.getText()));
-        jsonstr = ContactRepository.toJSON(contact);
-        spedit.putString(contact.getEmail(), jsonstr);
-        spedit.commit();
-        Intent i = new Intent(getApplicationContext(), ContactListActivity.class);
-        startActivity(i);
+        contact.setPhone(String.valueOf(phoneView.getText()));
+        contact.setTitle(String.valueOf(titleView.getText()));
+        contact.setEmail(String.valueOf(emailView.getText()));
+        contact.setTwitterId(String.valueOf(twitterView.getText()));
+        contactJson = ContactRepository.toJSON(contact);
+        Editor sharedPreferenceEditor = getSharedPreferences(APP_SHARED_PREFS, MODE_PRIVATE).edit();
+        sharedPreferenceEditor.putString(contact.getEmail(), contactJson);
+        sharedPreferenceEditor.commit();
+        Intent intent = new Intent(getApplicationContext(), ContactListActivity.class);
+        startActivity(intent);
     }
 
     public void deleteContact(View view) {
@@ -76,12 +71,11 @@ public class ContactEditActivity extends Activity {
         builder.setMessage("Are you sure you want delete this contact?").setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        sp = getSharedPreferences(APP_SHARED_PREFS, MODE_PRIVATE);
-                        spedit = sp.edit();
-                        spedit.remove(contact.getEmail());
-                        spedit.commit();
-                        Intent i = new Intent(getApplicationContext(), ContactListActivity.class);
-                        startActivity(i);
+                        Editor sharedPreferenceEditor = getSharedPreferences(APP_SHARED_PREFS, MODE_PRIVATE).edit();
+                        sharedPreferenceEditor.remove(contact.getEmail());
+                        sharedPreferenceEditor.commit();
+                        Intent intent = new Intent(getApplicationContext(), ContactListActivity.class);
+                        startActivity(intent);
                     }
                 }).setNegativeButton("No", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {

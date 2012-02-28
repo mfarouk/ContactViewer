@@ -2,30 +2,29 @@ package edu.umn.contactviewer;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
 public class ContactNewActivity extends Activity {
 
-    EditText name_editText;
-    EditText phone_editText;
-    EditText title_editText;
-    EditText email_editText;
-    EditText twitter_editText;
-    Contact contact;
+    private EditText nameView;
+    private EditText phoneView;
+    private EditText titleView;
+    private EditText emailView;
+    private EditText twitterView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.contact_new);
 
-        name_editText = (EditText) findViewById(R.id.item_name);
-        phone_editText = (EditText) findViewById(R.id.item_phone);
-        title_editText = (EditText) findViewById(R.id.item_title);
-        email_editText = (EditText) findViewById(R.id.item_email);
-        twitter_editText = (EditText) findViewById(R.id.item_twitterId);
+        nameView = (EditText) findViewById(R.id.item_name);
+        phoneView = (EditText) findViewById(R.id.item_phone);
+        titleView = (EditText) findViewById(R.id.item_title);
+        emailView = (EditText) findViewById(R.id.item_email);
+        twitterView = (EditText) findViewById(R.id.item_twitterId);
     }
 
     public void selfDestruct(View view) {
@@ -34,19 +33,18 @@ public class ContactNewActivity extends Activity {
     }
 
     public void commitContact(View view) {
-        SharedPreferences sp = getSharedPreferences(ContactEditActivity.APP_SHARED_PREFS,
-                ContactEditActivity.MODE_PRIVATE);
-        SharedPreferences.Editor spedit = sp.edit();
-        contact = new Contact(String.valueOf(name_editText.getText()));
-        contact.setPhone(String.valueOf(phone_editText.getText()));
-        contact.setTitle(String.valueOf(title_editText.getText()));
-        contact.setEmail(String.valueOf(email_editText.getText()));
-        contact.setTwitterId(String.valueOf(twitter_editText.getText()));
+        Editor sharedPreferenceEditor = getSharedPreferences(ContactEditActivity.APP_SHARED_PREFS,
+                ContactEditActivity.MODE_PRIVATE).edit();
+        Contact contact = new Contact(String.valueOf(nameView.getText()));
+        contact.setPhone(String.valueOf(phoneView.getText()));
+        contact.setTitle(String.valueOf(titleView.getText()));
+        contact.setEmail(String.valueOf(emailView.getText()));
+        contact.setTwitterId(String.valueOf(twitterView.getText()));
 
-        String jsonstr = ContactRepository.toJSON(contact);
-        spedit.putString(contact.getEmail(), jsonstr);
-        spedit.commit();
-        Intent i = new Intent(getApplicationContext(), ContactListActivity.class);
-        startActivity(i);
+        String contactJson = ContactRepository.toJSON(contact);
+        sharedPreferenceEditor.putString(contact.getEmail(), contactJson);
+        sharedPreferenceEditor.commit();
+        Intent contactListIntent = new Intent(getApplicationContext(), ContactListActivity.class);
+        startActivity(contactListIntent);
     }
 }
