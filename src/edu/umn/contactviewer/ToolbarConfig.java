@@ -42,13 +42,6 @@ public class ToolbarConfig {
     }
 
     /**
-     * Gets a reference to the right button on the toolbar.
-     */
-    public Button getToolbarRightButton() {
-        return (Button) _activity.findViewById(R.id.toolbar_right_button);
-    }
-
-    /**
      * Gets a reference to the title TextView on the toolbar.
      */
     public TextView getToolbarTitleView() {
