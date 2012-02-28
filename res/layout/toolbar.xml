@@ -26,12 +26,5 @@
         android:text="@string/new_contact"
         android:onClick="newContact" />
 
-    <Button android:id="@+id/toolbar_right_button"
-        style="@style/ToolbarButton"
-        android:text="Right"
-        android:layout_weight="0"
-        android:visibility="invisible">
-    </Button>
-
 </LinearLayout>
     

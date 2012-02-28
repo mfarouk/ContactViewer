@@ -11,23 +11,19 @@
         android:text="@string/cancel"
         android:layout_weight="0"
         android:onClick="selfDestruct"/>
-    
-	<TextView android:id="@+id/toolbar_title"
-	    style="@style/ToolbarTitle"
-	    android:text="Edit"
-        android:layout_weight="1"/>
+
+    <TextView
+        android:id="@+id/toolbar_title"
+        style="@style/ToolbarTitle"
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:text="Edit" />
 
 	<Button
 	    android:id="@+id/toolbar_done_button"
 	    style="@style/ToolbarButton"
-	    android:layout_weight="0"
-	    android:text="@string/done"
-	    android:onClick="commitContact" />
-
-    <Button android:id="@+id/toolbar_right_button"
-        style="@style/ToolbarButton"
-        android:text="Right"
-        android:layout_weight="0"
-        android:visibility="invisible">
-    </Button>
+	    android:layout_width="wrap_content"
+	    android:onClick="commitContact"
+	    android:text="@string/done" />
 </LinearLayout>
