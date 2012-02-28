@@ -8,10 +8,11 @@
     <string name="cancel">Cancel</string>
     <string name="done">Done</string>
     <string name="new_contact">New</string>
-    <string name="delete_contact">Delete Contact</string>
     <string name="contact_label_name">Name</string>
     <string name="contact_label_email">Email</string>
     <string name="contact_label_title">Title</string>
     <string name="contact_label_phone">Phone</string>
     <string name="contact_label_twitter">Twitter</string>
+    <string name="toolbar_details">Details</string>
+    <string name="contact_dynamicValue">&lt;&lt; text &gt;&gt;</string>
 </resources>

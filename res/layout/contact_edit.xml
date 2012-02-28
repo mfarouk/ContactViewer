@@ -6,6 +6,7 @@
     android:background="@drawable/item_background" >
  
     <include layout="@layout/edit_toolbar"
+        android:layout_height="0dp"
         android:layout_weight="0"/>
 
     <TextView
