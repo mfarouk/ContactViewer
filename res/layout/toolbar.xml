@@ -8,8 +8,8 @@
     <Button android:id="@+id/toolbar_back_button"
         style="@style/ToolbarButton"
         android:text="@string/back"
-        android:layout_weight="0">
-    </Button>
+        android:layout_weight="0"
+        android:onClick="backClicked"/>
 
     <TextView
         android:id="@+id/toolbar_title"

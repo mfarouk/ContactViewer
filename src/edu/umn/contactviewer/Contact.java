@@ -29,6 +29,9 @@ public class Contact implements Parcelable {
     private String _email;
     private String _twitterId;
 
+    public static final int CONTACT_UPDATED = 0;
+    public static final int CONTACT_DELETED = 1;
+    
     public static final Parcelable.Creator<Contact> CREATOR = new Parcelable.Creator<Contact>() {
         public Contact createFromParcel(Parcel in) {
             return new Contact(in);
@@ -59,6 +62,40 @@ public class Contact implements Parcelable {
     public String getUUID() {
         return _uuid;
     }
+	/**
+	 * Creates a new Contact object, using the values that had previously been
+	 * saved.
+	 * 
+	 * @param savedUser
+	 * @throws JSONException
+	 */
+	public Contact(JSONObject savedUser) throws JSONException {
+		_uuid = savedUser.getString("uuid");
+		
+		if(savedUser.has("name"))		_name = savedUser.getString("name");
+		if(savedUser.has("title"))		_title = savedUser.getString("title");
+		if(savedUser.has("phone"))		_phone = savedUser.getString("phone");
+		if(savedUser.has("email"))		_email = savedUser.getString("email");
+		if(savedUser.has("twitterId"))	_twitterId = savedUser.getString("twitterId");
+	}
+
+	/**
+	 * Create a JSON representation of this Contact for persisting or passing 
+	 * to other Activities.
+	 * 
+	 * @return
+	 * @throws JSONException
+	 */
+	public JSONObject serialize() throws JSONException{
+		JSONObject saveUser = new JSONObject();
+		saveUser.put("uuid", _uuid);
+		saveUser.put("name", _name);
+		saveUser.put("title", _title);
+		saveUser.put("phone", _phone);
+		saveUser.put("email", _email);
+		saveUser.put("twitterID", _twitterId);
+		return saveUser;
+	}
 
     /**
      * Set the contact's name.
@@ -157,9 +194,9 @@ public class Contact implements Parcelable {
         try {
             jsonObject.put(UUID_KEY, getUUID());
             jsonObject.put(NAME_KEY, getName());
+            jsonObject.put(PHONE_KEY, getPhone());
             jsonObject.put(TITLE_KEY, getTitle());
             jsonObject.put(EMAIL_KEY, getEmail());
-            jsonObject.put(PHONE_KEY, getPhone());
             jsonObject.put(TWITTER_ID_KEY, getTwitterId());
 
         } catch (JSONException e) {

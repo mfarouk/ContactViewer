@@ -39,7 +39,7 @@ public class ContactNewActivity extends Activity {
         contact.setEmail(emailView.getText().toString());
         contact.setTwitterId(twitterView.getText().toString());
 
-        ContactRepository.getInstance().putContact(contact);
+        ContactRepository.getInstance(getBaseContext()).putContact(contact);
 
         Intent contactListIntent = new Intent(getApplicationContext(), ContactListActivity.class);
         startActivity(contactListIntent);

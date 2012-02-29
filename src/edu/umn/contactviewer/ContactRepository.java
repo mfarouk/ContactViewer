@@ -11,7 +11,7 @@ import android.preference.PreferenceManager;
 public class ContactRepository {
 
     private static ContactRepository _instance;
-    private static Context baseContext;
+    private static Context _baseContext;
     private static boolean loadDefaultContacts = true;
 
     private HashMap<String, Contact> contacts;
@@ -20,16 +20,19 @@ public class ContactRepository {
         loadContacts();
     }
 
-    public static ContactRepository getInstance() {
-        if (_instance == null && baseContext != null) {
+    public static ContactRepository getInstance(Context baseContext) {
+        if (_instance == null) {
             _instance = new ContactRepository();
+        }
+        if (baseContext == null) {
+            _baseContext = baseContext;
         }
         return _instance;
     }
 
     private void loadContacts() {
         contacts = new HashMap<String, Contact>();
-        Map<String, ?> contactsJson = getSharedPreferences().getAll();
+        Map<String, ?> contactsJson = getSharedPreferences(_baseContext).getAll();
         for (Entry<String, ?> contactJson : contactsJson.entrySet()) {
             contacts.put(contactJson.getKey(), new Contact((String) contactJson.getValue()));
         }
@@ -81,7 +84,7 @@ public class ContactRepository {
     }
 
     public void persistContacts() {
-        Editor editor = getSharedPreferences().edit();
+        Editor editor = getSharedPreferences(_baseContext).edit();
         for (Contact contact : contacts.values()) {
             editor.putString(contact.getUUID(), contact.toJSON());
         }
@@ -97,12 +100,8 @@ public class ContactRepository {
         contacts.put(contact.getUUID(), contact);
     }
 
-    private SharedPreferences getSharedPreferences() {
+    private SharedPreferences getSharedPreferences(Context baseContext) {
         return PreferenceManager.getDefaultSharedPreferences(baseContext);
-    }
-
-    public static void setBaseContext(Context baseContext) {
-        ContactRepository.baseContext = baseContext;
     }
 
 }
