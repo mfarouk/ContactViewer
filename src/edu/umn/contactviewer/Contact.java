@@ -10,7 +10,9 @@ import org.json.JSONObject;
  * 
  */
 public class Contact {
-
+	public static final int CONTACT_UPDATED = 101;
+	public static final int CONTACT_DELETED = 102;
+	
     private String _uuid;
     private String _name;
     private String _phone;
@@ -42,11 +44,12 @@ public class Contact {
 	 */
 	public Contact(JSONObject savedUser) throws JSONException {
 		_uuid = savedUser.getString("uuid");
-		_name = savedUser.getString("name");
-		_title = savedUser.getString("title");
-		_phone = savedUser.getString("phone");
-		_email = savedUser.getString("email");
-		_twitterId = savedUser.getString("twitterId");
+		
+		if(savedUser.has("name"))		_name = savedUser.getString("name");
+		if(savedUser.has("title"))		_title = savedUser.getString("title");
+		if(savedUser.has("phone"))		_phone = savedUser.getString("phone");
+		if(savedUser.has("email"))		_email = savedUser.getString("email");
+		if(savedUser.has("twitterId"))	_twitterId = savedUser.getString("twitterId");
 	}
 
 	/**

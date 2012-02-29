@@ -1,5 +1,10 @@
 package edu.umn.contactviewer;
 
+// For Activity communication help:
+//     http://www.vogella.de/articles/AndroidIntent/article.html#explicitintents
+//
+
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +17,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,18 +29,17 @@ import android.widget.AdapterView.*;
  */
 public class ContactListActivity extends ListActivity {
     public static final int CODE__NEW_CONTACT = 11;
-	// final ArrayList<HashMap<String,String>> LIST = new
-    // ArrayList<HashMap<String,String>>();
+    public static final int CODE__DETAILS = 12;
     
     ArrayList<Contact> contacts;
 
+    // Called when "New" button is clicked
     public void newContact(View view) {
         Intent contactNewIntent = new Intent(getApplicationContext(), ContactNewActivity.class);
-        //Toast.makeText(getApplicationContext(), "Intent: contactNewIntent", Toast.LENGTH_SHORT).show();
-        //startActivity(contactNewIntent);
         startActivityForResult(contactNewIntent, CODE__NEW_CONTACT);
     }
     
+    // Called when "Back" button is clicked
     public void backClicked(View view){
     	finish();
     }
@@ -60,6 +65,10 @@ public class ContactListActivity extends ListActivity {
 
     private void initListView()
     {
+    	// Sort contacts ArrayList so it always appears in the same order
+    	// TODO
+    	
+    	// create list
     	setListAdapter(new ContactAdapter(this, R.layout.list_item, contacts));
         ListView lv = getListView();
         lv.setTextFilterEnabled(true);
@@ -67,19 +76,19 @@ public class ContactListActivity extends ListActivity {
         // handle the item click events
         lv.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // When clicked, show a toast with the TextView text
-                // Toast.makeText(getApplicationContext(),
-                // "Clicked: " +
-                // ((ContactAdapter)getListAdapter()).getItem(position).getName(),
-                // Toast.LENGTH_SHORT).show();
-                // Serialize contact using JSON object
-                Contact contact = ((ContactAdapter) getListAdapter()).getItem(position);
-                String contactJson = ContactRepository.toJSON(contact);
-                // Launching new Activity on selecting single List Item
-                Intent contactDetailIntent = new Intent(getApplicationContext(), ContactDetailActivity.class);
-                contactDetailIntent.putExtra("contact", contactJson);
-                Toast.makeText(getApplicationContext(), "Launch contactDetailIntent", Toast.LENGTH_SHORT).show();
-                //startActivity(contactDetailIntent);
+            	try{
+            		// Serialize contact that was clicked on
+            		Contact contact = ((ContactAdapter) getListAdapter()).getItem(position);
+            		String contactJson = contact.serialize().toString();
+            		
+            		// Launch Details view Activity -> provice "call-back"
+            		Intent data = new Intent(getApplicationContext(), ContactDetailActivity.class);
+            		data.putExtra("contact", contactJson);
+            		startActivityForResult(data, CODE__DETAILS);
+            	}
+            	catch(JSONException e){
+            		Log.e("ContactListActivity","Unable to build json object for details view");
+            	}
             }
         });
     }
@@ -89,9 +98,8 @@ public class ContactListActivity extends ListActivity {
      */
     @Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	// New Contact Activity Call-back handler
 		if (resultCode == RESULT_OK && requestCode == CODE__NEW_CONTACT) {
-			//Toast.makeText(getApplicationContext(), "new contact successful", Toast.LENGTH_SHORT).show();
-			
 			// make a new contact
 			Contact person = new Contact();
 			person.setName(data.getExtras().getString("name"));
@@ -101,19 +109,22 @@ public class ContactListActivity extends ListActivity {
 			person.setTwitterId(data.getExtras().getString("twitterId"));
 			Toast.makeText(getApplicationContext(), "Contact: " + person.getName(), Toast.LENGTH_SHORT).show();
 			
-			// add contact to list...  How??
 			contacts.add(person);
 			initListView();
 		}
-		else if(requestCode == CODE__NEW_CONTACT) {
-			Toast.makeText(getApplicationContext(), "new contact canceled", Toast.LENGTH_SHORT).show();
+		
+		// Details Activity Call-back handler
+		else if(requestCode == CODE__DETAILS && resultCode == Contact.CONTACT_UPDATED){
+			Toast.makeText(getApplicationContext(), "Contact updated", Toast.LENGTH_SHORT);
+		}
+		else if(requestCode == CODE__DETAILS && resultCode == Contact.CONTACT_DELETED){
+			Toast.makeText(getApplicationContext(), "Contact deleted", Toast.LENGTH_SHORT);
 		}
 	}
     
     @Override
 	public void finish() {
     	SharedPreferences sp = getPreferences(MODE_PRIVATE);
-       // Editor spedit = sp.edit();
         Editor spedit = getSharedPreferences(ContactEditActivity.APP_SHARED_PREFS,
                 ContactEditActivity.MODE_PRIVATE).edit();
         spedit.clear();		// erase all entries
