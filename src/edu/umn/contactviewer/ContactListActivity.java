@@ -3,10 +3,14 @@ package edu.umn.contactviewer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import org.json.JSONException;
+
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +33,10 @@ public class ContactListActivity extends ListActivity {
         //Toast.makeText(getApplicationContext(), "Intent: contactNewIntent", Toast.LENGTH_SHORT).show();
         //startActivity(contactNewIntent);
         startActivityForResult(contactNewIntent, CODE__NEW_CONTACT);
+    }
+    
+    public void backClicked(View view){
+    	finish();
     }
 
     @Override
@@ -101,6 +109,32 @@ public class ContactListActivity extends ListActivity {
 			Toast.makeText(getApplicationContext(), "new contact canceled", Toast.LENGTH_SHORT).show();
 		}
 	}
+    
+    @Override
+	public void finish() {
+    	SharedPreferences sp = getPreferences(MODE_PRIVATE);
+       // Editor spedit = sp.edit();
+        Editor spedit = getSharedPreferences(ContactEditActivity.APP_SHARED_PREFS,
+                ContactEditActivity.MODE_PRIVATE).edit();
+        spedit.clear();		// erase all entries
+        
+        for(Contact person : contacts){
+        	try{
+        		spedit.putString(person.getUUID(), person.serialize().toString());
+        		//Toast.makeText(getApplicationContext(), 
+        		//		"Saved: {" + person.getUUID() + ", " + person.getName() + "}",
+        		//		Toast.LENGTH_SHORT).show();
+        	}
+        	catch(JSONException e){
+        		Toast.makeText(getApplicationContext(), "Error: failed to save " + person.getName(), Toast.LENGTH_SHORT).show();
+        	}
+        }
+        
+        spedit.apply();
+        spedit.commit();
+        super.finish();
+    }
+    
     
     
     /**
