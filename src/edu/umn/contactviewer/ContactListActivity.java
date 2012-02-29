@@ -18,12 +18,17 @@ import android.widget.AdapterView.*;
  * Displays a list of contacts.
  */
 public class ContactListActivity extends ListActivity {
-    // final ArrayList<HashMap<String,String>> LIST = new
+    public static final int CODE__NEW_CONTACT = 11;
+	// final ArrayList<HashMap<String,String>> LIST = new
     // ArrayList<HashMap<String,String>>();
+    
+    ArrayList<Contact> contacts;
 
     public void newContact(View view) {
         Intent contactNewIntent = new Intent(getApplicationContext(), ContactNewActivity.class);
-        startActivity(contactNewIntent);
+        //Toast.makeText(getApplicationContext(), "Intent: contactNewIntent", Toast.LENGTH_SHORT).show();
+        //startActivity(contactNewIntent);
+        startActivityForResult(contactNewIntent, CODE__NEW_CONTACT);
     }
 
     @Override
@@ -31,7 +36,7 @@ public class ContactListActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list);
         new ToolbarConfig(this, "Contacts");
-        ArrayList<Contact> contacts = new ArrayList<Contact>();
+        contacts = new ArrayList<Contact>();
         SharedPreferences sp = getSharedPreferences(ContactEditActivity.APP_SHARED_PREFS,
                 ContactEditActivity.MODE_PRIVATE);
         Map<String, ?> items = sp.getAll();
@@ -40,37 +45,14 @@ public class ContactListActivity extends ListActivity {
             contacts.add(contact);
         }
 
-        // make some contacts - Hard Coded Contacts, could be used for first
-        // time fill up of db
-
-        /*
-         * contacts.add(new Contact("Malcom Reynolds")
-         * .setEmail("mal@serenity.com") .setTitle("Captain")
-         * .setPhone("612-555-1234") .setTwitterId("malcomreynolds"));
-         * contacts.add(new Contact("Zoe Washburne")
-         * .setEmail("zoe@serenity.com") .setTitle("First Mate")
-         * .setPhone("612-555-5678") .setTwitterId("zoewashburne"));
-         * contacts.add(new Contact("Hoban Washburne")
-         * .setEmail("wash@serenity.com") .setTitle("Pilot")
-         * .setPhone("612-555-9012") .setTwitterId("wash")); contacts.add(new
-         * Contact("Jayne Cobb") .setEmail("jayne@serenity.com")
-         * .setTitle("Muscle") .setPhone("612-555-3456")
-         * .setTwitterId("heroofcanton")); contacts.add(new
-         * Contact("Kaylee Frye") .setEmail("kaylee@serenity.com")
-         * .setTitle("Engineer") .setPhone("612-555-7890")
-         * .setTwitterId("kaylee")); contacts.add(new Contact("Simon Tam")
-         * .setEmail("simon@serenity.com") .setTitle("Doctor")
-         * .setPhone("612-555-4321") .setTwitterId("simontam"));
-         * contacts.add(new Contact("River Tam") .setEmail("river@serenity.com")
-         * .setTitle("Doctor's Sister") .setPhone("612-555-8765")
-         * .setTwitterId("miranda")); contacts.add(new Contact("Shepherd Book")
-         * .setEmail("shepherd@serenity.com") .setTitle("Shepherd")
-         * .setPhone("612-555-2109") .setTwitterId("shepherdbook"));
-         */
-
         // initialize the list view
+        initListView();
+        
+    }
 
-        setListAdapter(new ContactAdapter(this, R.layout.list_item, contacts));
+    private void initListView()
+    {
+    	setListAdapter(new ContactAdapter(this, R.layout.list_item, contacts));
         ListView lv = getListView();
         lv.setTextFilterEnabled(true);
 
@@ -88,11 +70,39 @@ public class ContactListActivity extends ListActivity {
                 // Launching new Activity on selecting single List Item
                 Intent contactDetailIntent = new Intent(getApplicationContext(), ContactDetailActivity.class);
                 contactDetailIntent.putExtra("contact", contactJson);
-                startActivity(contactDetailIntent);
+                Toast.makeText(getApplicationContext(), "Launch contactDetailIntent", Toast.LENGTH_SHORT).show();
+                //startActivity(contactDetailIntent);
             }
         });
     }
-
+    
+    /**
+     * Handles data returned from child Activities.
+     */
+    @Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode == RESULT_OK && requestCode == CODE__NEW_CONTACT) {
+			//Toast.makeText(getApplicationContext(), "new contact successful", Toast.LENGTH_SHORT).show();
+			
+			// make a new contact
+			Contact person = new Contact();
+			person.setName(data.getExtras().getString("name"));
+			person.setTitle(data.getExtras().getString("title"));
+			person.setPhone(data.getExtras().getString("phone"));
+			person.setEmail(data.getExtras().getString("email"));
+			person.setTwitterId(data.getExtras().getString("twitterId"));
+			Toast.makeText(getApplicationContext(), "Contact: " + person.getName(), Toast.LENGTH_SHORT).show();
+			
+			// add contact to list...  How??
+			contacts.add(person);
+			initListView();
+		}
+		else if(requestCode == CODE__NEW_CONTACT) {
+			Toast.makeText(getApplicationContext(), "new contact canceled", Toast.LENGTH_SHORT).show();
+		}
+	}
+    
+    
     /**
      * We need to provide a custom adapter in order to use a custom list item
      * view.

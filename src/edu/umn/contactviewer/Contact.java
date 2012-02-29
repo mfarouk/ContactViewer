@@ -28,6 +28,10 @@ public class Contact {
 		_uuid = UUID.randomUUID().toString();
 		_name = name;
 	}
+	
+	public Contact(){
+		this("");
+	}
 
 	/**
 	 * Creates a new Contact object, using the values that had previously been
@@ -44,7 +48,7 @@ public class Contact {
 		_email = savedUser.getString("email");
 		_twitterId = savedUser.getString("twitterId");
 	}
-	
+
 	/**
 	 * Create a JSON representation of this Contact for persisting or passing 
 	 * to other Activities.
@@ -150,4 +154,6 @@ public class Contact {
 	public String toString() {
 		return _name + " (" + _title + ")";
 	}
+	
+	
 }
