@@ -47,7 +47,7 @@
 	    android:id="@+id/textView1"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:text="@string/contact_label_title"
+	    android:text="@string/contact_label_email"
 	    android:textAppearance="?android:attr/textAppearanceMedium" 
 	    android:textColor="@color/text_color_black" />
 	
@@ -93,5 +93,12 @@
 	    android:layout_alignParentBottom="true"
 	    android:hint="@string/contact_label_twitter"
 	    android:inputType="text"/>
+	
+	<Button android:id="@+id/edit_delete_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/edit_delete"
+        android:layout_weight="0"
+        android:onClick="deleteContact"/>
 
 </LinearLayout>

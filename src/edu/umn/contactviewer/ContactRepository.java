@@ -8,7 +8,7 @@ import android.preference.PreferenceActivity;
 import android.util.Log;
 
 public class ContactRepository extends PreferenceActivity {
-
+/*
     public static final String Current_Contact = "ContactFile";
     public String name, phone, title, email, twitterId;
 
@@ -56,5 +56,5 @@ public class ContactRepository extends PreferenceActivity {
     public void deleteContact() {
 
     }
-
+*/
 }

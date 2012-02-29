@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.ListActivity;
 import android.content.Context;
@@ -33,6 +34,7 @@ public class ContactListActivity extends ListActivity {
     public static final int CODE__DETAILS = 12;
     
     ArrayList<Contact> contacts;
+    int userSelectedContactPosition;
 
     // Called when "New" button is clicked
     public void newContact(View view) {
@@ -55,8 +57,15 @@ public class ContactListActivity extends ListActivity {
                 ContactEditActivity.MODE_PRIVATE);
         Map<String, ?> items = sp.getAll();
         for (String s : items.keySet()) {
-            Contact contact = ContactRepository.parseJSON(items.get(s).toString());
-            contacts.add(contact);
+            //Contact contact = ContactRepository.parseJSON(items.get(s).toString());
+            Contact contact;
+			try {
+				contact = new Contact(new JSONObject(items.get(s).toString()));
+				contacts.add(contact);
+			} catch (JSONException e) {
+				Log.e("ContactListActivity","Error restoring contact");
+			}
+            
         }
 
         // initialize the list view
@@ -64,7 +73,7 @@ public class ContactListActivity extends ListActivity {
         
     }
 
-    @SuppressWarnings("unchecked")
+    //@SuppressWarnings("unchecked")
 	private void initListView()
     {
     	// Sort contacts ArrayList so it always appears in the same order
@@ -79,6 +88,8 @@ public class ContactListActivity extends ListActivity {
         lv.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             	try{
+            		userSelectedContactPosition = position;
+            		
             		// Serialize contact that was clicked on
             		Contact contact = ((ContactAdapter) getListAdapter()).getItem(position);
             		String contactJson = contact.serialize().toString();
@@ -117,10 +128,21 @@ public class ContactListActivity extends ListActivity {
 		
 		// Details Activity Call-back handler
 		else if(requestCode == CODE__DETAILS && resultCode == Contact.CONTACT_UPDATED){
-			Toast.makeText(getApplicationContext(), "Contact updated", Toast.LENGTH_SHORT);
+			//Toast.makeText(getApplicationContext(), "Contact updated", Toast.LENGTH_SHORT);
+			
+			// extract contact from array list -> using uuid
+			contacts.get(userSelectedContactPosition).update(data.getExtras().getString("contact"));
+			
+			// Update view
+			initListView();
 		}
 		else if(requestCode == CODE__DETAILS && resultCode == Contact.CONTACT_DELETED){
-			Toast.makeText(getApplicationContext(), "Contact deleted", Toast.LENGTH_SHORT);
+			//Toast.makeText(getApplicationContext(), "Contact deleted", Toast.LENGTH_SHORT);
+			// remove contact from ArrayList
+			contacts.remove(userSelectedContactPosition);
+			
+			// Update view
+			initListView();
 		}
 	}
     

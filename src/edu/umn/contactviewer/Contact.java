@@ -5,6 +5,8 @@ import java.util.UUID;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 /**
  * Model class for storing a single contact.
  * 
@@ -44,14 +46,30 @@ public class Contact implements Comparable<Contact> {
 	 */
 	public Contact(JSONObject savedUser) throws JSONException {
 		_uuid = savedUser.getString("uuid");
-		
-		if(savedUser.has("name"))		_name = savedUser.getString("name");
-		if(savedUser.has("title"))		_title = savedUser.getString("title");
-		if(savedUser.has("phone"))		_phone = savedUser.getString("phone");
-		if(savedUser.has("email"))		_email = savedUser.getString("email");
-		if(savedUser.has("twitterId"))	_twitterId = savedUser.getString("twitterId");
+		update(savedUser);
 	}
 
+	public void update(String json){
+		try{
+			update(new JSONObject(json));
+		}
+		catch(Exception e){
+			Log.e("Contact","Error updating contact with string input");
+		}
+	}
+	
+	public void update(JSONObject json){
+		try {
+			if(json.has("name"))		_name = json.getString("name");
+			if(json.has("title"))		_title = json.getString("title");
+			if(json.has("phone"))		_phone = json.getString("phone");
+			if(json.has("email"))		_email = json.getString("email");
+			if(json.has("twitterId"))	_twitterId = json.getString("twitterId");
+		}
+		catch(Exception e) {
+			Log.e("Contact", "Error updating contact with json input");
+		}
+	}
 	/**
 	 * Create a JSON representation of this Contact for persisting or passing 
 	 * to other Activities.
@@ -160,7 +178,11 @@ public class Contact implements Comparable<Contact> {
 
 	// Comparable method implementation to allow auto sorting of contact list.
 	public int compareTo(Contact other) {
-		return this.getName().compareTo(other.getName());
+		int nameCompared = this.getName().compareTo(other.getName());
+		if(nameCompared == 0){
+			return this.getTitle().compareTo(other.getTitle());
+		}
+		return nameCompared;
 	}
 
 
