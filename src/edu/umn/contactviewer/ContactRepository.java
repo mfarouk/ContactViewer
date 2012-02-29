@@ -21,11 +21,11 @@ public class ContactRepository {
     }
 
     public static ContactRepository getInstance(Context baseContext) {
+        if (_baseContext == null) {
+            _baseContext = baseContext;
+        }
         if (_instance == null) {
             _instance = new ContactRepository();
-        }
-        if (baseContext == null) {
-            _baseContext = baseContext;
         }
         return _instance;
     }

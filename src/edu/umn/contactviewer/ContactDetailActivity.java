@@ -19,7 +19,7 @@ public class ContactDetailActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        contact = getIntent().getExtras().getParcelable("selectedContact");
+        contact = getIntent().getExtras().getParcelable(Contact.SELECTED_ID);
 
         this.setContentView(R.layout.contact_detail);
 

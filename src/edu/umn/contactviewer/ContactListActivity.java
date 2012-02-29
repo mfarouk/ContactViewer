@@ -2,12 +2,10 @@ package edu.umn.contactviewer;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.json.JSONException;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,18 +54,10 @@ public class ContactListActivity extends ListActivity {
         // handle the item click events
         lv.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                try {
-                    // Serialize contact that was clicked on
-                    Contact contact = ((ContactAdapter) getListAdapter()).getItem(position);
-                    String contactJson = contact.serialize().toString();
-
-                    // Launch Details view Activity -> provice "call-back"
-                    Intent data = new Intent(getApplicationContext(), ContactDetailActivity.class);
-                    data.putExtra("contact", contactJson);
-                    startActivityForResult(data, CODE__DETAILS);
-                } catch (JSONException e) {
-                    Log.e("ContactListActivity", "Unable to build json object for details view");
-                }
+                Contact contact = ((ContactAdapter) getListAdapter()).getItem(position);
+                Intent data = new Intent(getApplicationContext(), ContactDetailActivity.class);
+                data.putExtra(Contact.SELECTED_ID, contact);
+                startActivityForResult(data, CODE__DETAILS);
             }
         });
     }
