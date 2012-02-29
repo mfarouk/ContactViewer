@@ -6,6 +6,7 @@ package edu.umn.contactviewer;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -63,10 +64,11 @@ public class ContactListActivity extends ListActivity {
         
     }
 
-    private void initListView()
+    @SuppressWarnings("unchecked")
+	private void initListView()
     {
     	// Sort contacts ArrayList so it always appears in the same order
-    	// TODO
+    	Collections.sort(contacts);
     	
     	// create list
     	setListAdapter(new ContactAdapter(this, R.layout.list_item, contacts));

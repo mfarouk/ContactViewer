@@ -9,7 +9,7 @@ import org.json.JSONObject;
  * Model class for storing a single contact.
  * 
  */
-public class Contact {
+public class Contact implements Comparable<Contact> {
 	public static final int CONTACT_UPDATED = 101;
 	public static final int CONTACT_DELETED = 102;
 	
@@ -157,6 +157,13 @@ public class Contact {
 	public String toString() {
 		return _name + " (" + _title + ")";
 	}
+
+	// Comparable method implementation to allow auto sorting of contact list.
+	public int compareTo(Contact other) {
+		return this.getName().compareTo(other.getName());
+	}
+
+
 	
 	
 }
