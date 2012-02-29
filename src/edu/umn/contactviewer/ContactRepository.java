@@ -1,60 +1,108 @@
 package edu.umn.contactviewer;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.preference.PreferenceActivity;
-import android.util.Log;
+import android.preference.PreferenceManager;
 
-public class ContactRepository extends PreferenceActivity {
+public class ContactRepository {
 
-    public static final String Current_Contact = "ContactFile";
-    public String name, phone, title, email, twitterId;
+    private static ContactRepository _instance;
+    private static Context baseContext;
+    private static boolean loadDefaultContacts = true;
 
-    public static String toJSON(Contact contact) {
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("name", contact.getName());
-            jsonObject.put("phone", contact.getPhone());
-            jsonObject.put("title", contact.getTitle());
-            jsonObject.put("email", contact.getEmail());
-            jsonObject.put("twitterId", contact.getTwitterId());
+    private HashMap<String, Contact> contacts;
 
-        } catch (JSONException e) {
-            Log.e("Contact Retrieval", "Error building JSON: " + jsonObject, e);
+    private ContactRepository() {
+        loadContacts();
+    }
+
+    public static ContactRepository getInstance() {
+        if (_instance == null && baseContext != null) {
+            _instance = new ContactRepository();
         }
-        return jsonObject.toString();
+        return _instance;
     }
 
-    public static Contact parseJSON(String json) {
-        JSONObject jsonObject = null;
-        Contact contact = null;
-        try {
-            jsonObject = new JSONObject(json);
-            contact = new Contact(jsonObject.getString("name"));
-            // contact.setName(jsonret.getString("name"));
-            contact.setPhone(jsonObject.getString("phone"));
-            contact.setTitle(jsonObject.getString("title"));
-            contact.setEmail(jsonObject.getString("email"));
-            contact.setTwitterId(jsonObject.getString("twitterId"));
-        } catch (JSONException e) {
-            Log.e("Contact Display", "Error restoring contact from JSON: " + jsonObject, e);
+    private void loadContacts() {
+        contacts = new HashMap<String, Contact>();
+        Map<String, ?> contactsJson = getSharedPreferences().getAll();
+        for (Entry<String, ?> contactJson : contactsJson.entrySet()) {
+            contacts.put(contactJson.getKey(), new Contact((String) contactJson.getValue()));
         }
-        return contact;
+
+        if (loadDefaultContacts) {
+            loadDefaultContacts();
+        }
     }
 
-    public void saveContact(Contact contact) {
-        System.out.println("Hello");
-        SharedPreferences sp = getPreferences(MODE_PRIVATE);
-        Editor spedit = sp.edit();
-        // jsonstr = toJSON(contact);
-        // spedit.putString(contact.getEmail(),jsonstr);
-        // spedit.commit();
+    private void loadDefaultContacts() {
+        Contact defaultContact = new Contact();
+        defaultContact.setName("Malcom Reynolds");
+        defaultContact.setEmail("mal@serenity.com");
+        defaultContact.setTitle("Captain");
+        defaultContact.setPhone("612-555-1234");
+        defaultContact.setTwitterId("malcomreynolds");
+        contacts.put(defaultContact.getUUID(), defaultContact);
+
+        defaultContact = new Contact();
+        defaultContact.setName("Zoe Washburne");
+        defaultContact.setEmail("zoe@serenity.com");
+        defaultContact.setTitle("First Mate");
+        defaultContact.setPhone("612-555-5678");
+        defaultContact.setTwitterId("zoewashburne");
+        contacts.put(defaultContact.getUUID(), defaultContact);
+
+        defaultContact = new Contact();
+        defaultContact.setName("Hoban Washburne");
+        defaultContact.setEmail("wash@serenity.com");
+        defaultContact.setTitle("Pilot");
+        defaultContact.setPhone("612-555-9012");
+        defaultContact.setTwitterId("wash");
+        contacts.put(defaultContact.getUUID(), defaultContact);
+
+        defaultContact = new Contact();
+        defaultContact.setName("Jayne Cobb");
+        defaultContact.setEmail("jayne@serenity.com");
+        defaultContact.setTitle("Muscle");
+        defaultContact.setPhone("612-555-3456");
+        defaultContact.setTwitterId("heroofcanton");
+        contacts.put(defaultContact.getUUID(), defaultContact);
     }
 
-    public void deleteContact() {
+    public HashMap<String, Contact> getContacts() {
+        if (contacts == null) {
+            loadContacts();
+        }
+        return contacts;
+    }
 
+    public void persistContacts() {
+        Editor editor = getSharedPreferences().edit();
+        for (Contact contact : contacts.values()) {
+            editor.putString(contact.getUUID(), contact.toJSON());
+        }
+        editor.commit();
+    }
+
+    public void removeContact(Contact contact) {
+        contacts.remove(contact.getUUID());
+        persistContacts();
+    }
+
+    public void putContact(Contact contact) {
+        contacts.put(contact.getUUID(), contact);
+    }
+
+    private SharedPreferences getSharedPreferences() {
+        return PreferenceManager.getDefaultSharedPreferences(baseContext);
+    }
+
+    public static void setBaseContext(Context baseContext) {
+        ContactRepository.baseContext = baseContext;
     }
 
 }

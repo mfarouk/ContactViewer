@@ -2,74 +2,35 @@ package edu.umn.contactviewer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
-import android.widget.AdapterView.*;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 
 /**
  * Displays a list of contacts.
  */
 public class ContactListActivity extends ListActivity {
-    // final ArrayList<HashMap<String,String>> LIST = new
-    // ArrayList<HashMap<String,String>>();
-
-    public void newContact(View view) {
-        Intent contactNewIntent = new Intent(getApplicationContext(), ContactNewActivity.class);
-        startActivity(contactNewIntent);
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list);
         new ToolbarConfig(this, "Contacts");
-        ArrayList<Contact> contacts = new ArrayList<Contact>();
-        SharedPreferences sp = getSharedPreferences(ContactEditActivity.APP_SHARED_PREFS,
-                ContactEditActivity.MODE_PRIVATE);
-        Map<String, ?> items = sp.getAll();
-        for (String s : items.keySet()) {
-            Contact contact = ContactRepository.parseJSON(items.get(s).toString());
-            contacts.add(contact);
-        }
 
-        // make some contacts - Hard Coded Contacts, could be used for first
-        // time fill up of db
-
-        /*
-         * contacts.add(new Contact("Malcom Reynolds")
-         * .setEmail("mal@serenity.com") .setTitle("Captain")
-         * .setPhone("612-555-1234") .setTwitterId("malcomreynolds"));
-         * contacts.add(new Contact("Zoe Washburne")
-         * .setEmail("zoe@serenity.com") .setTitle("First Mate")
-         * .setPhone("612-555-5678") .setTwitterId("zoewashburne"));
-         * contacts.add(new Contact("Hoban Washburne")
-         * .setEmail("wash@serenity.com") .setTitle("Pilot")
-         * .setPhone("612-555-9012") .setTwitterId("wash")); contacts.add(new
-         * Contact("Jayne Cobb") .setEmail("jayne@serenity.com")
-         * .setTitle("Muscle") .setPhone("612-555-3456")
-         * .setTwitterId("heroofcanton")); contacts.add(new
-         * Contact("Kaylee Frye") .setEmail("kaylee@serenity.com")
-         * .setTitle("Engineer") .setPhone("612-555-7890")
-         * .setTwitterId("kaylee")); contacts.add(new Contact("Simon Tam")
-         * .setEmail("simon@serenity.com") .setTitle("Doctor")
-         * .setPhone("612-555-4321") .setTwitterId("simontam"));
-         * contacts.add(new Contact("River Tam") .setEmail("river@serenity.com")
-         * .setTitle("Doctor's Sister") .setPhone("612-555-8765")
-         * .setTwitterId("miranda")); contacts.add(new Contact("Shepherd Book")
-         * .setEmail("shepherd@serenity.com") .setTitle("Shepherd")
-         * .setPhone("612-555-2109") .setTwitterId("shepherdbook"));
-         */
+        // read contacts from ContactRepository
+        ContactRepository.setBaseContext(getBaseContext());
+        ArrayList<Contact> contacts = new ArrayList<Contact>(ContactRepository.getInstance().getContacts().values());
 
         // initialize the list view
-
         setListAdapter(new ContactAdapter(this, R.layout.list_item, contacts));
         ListView lv = getListView();
         lv.setTextFilterEnabled(true);
@@ -77,18 +38,11 @@ public class ContactListActivity extends ListActivity {
         // handle the item click events
         lv.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // When clicked, show a toast with the TextView text
-                // Toast.makeText(getApplicationContext(),
-                // "Clicked: " +
-                // ((ContactAdapter)getListAdapter()).getItem(position).getName(),
-                // Toast.LENGTH_SHORT).show();
-                // Serialize contact using JSON object
+                // Launching new Activity on selecting single contact
                 Contact contact = ((ContactAdapter) getListAdapter()).getItem(position);
-                String contactJson = ContactRepository.toJSON(contact);
-                // Launching new Activity on selecting single List Item
-                Intent contactDetailIntent = new Intent(getApplicationContext(), ContactDetailActivity.class);
-                contactDetailIntent.putExtra("contact", contactJson);
-                startActivity(contactDetailIntent);
+                Intent intent = new Intent(getApplicationContext(), ContactDetailActivity.class);
+                intent.putExtra(Contact.SELECTED_ID, contact);
+                startActivity(intent);
             }
         });
     }

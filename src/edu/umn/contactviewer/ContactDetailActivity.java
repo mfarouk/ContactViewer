@@ -13,11 +13,14 @@ public class ContactDetailActivity extends Activity {
     private TextView titleView;
     private TextView emailView;
     private TextView twitterView;
-    private String contactJson;
+    private Contact contact;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        contact = getIntent().getExtras().getParcelable(Contact.SELECTED_ID);
+
         this.setContentView(R.layout.contact_detail);
 
         nameView = (TextView) findViewById(R.id.item_name);
@@ -26,22 +29,11 @@ public class ContactDetailActivity extends Activity {
         emailView = (TextView) findViewById(R.id.item_email);
         twitterView = (TextView) findViewById(R.id.item_twitterId);
 
-        Intent intent = getIntent();
-
-        // getting attached intent data
-        try {
-            contactJson = intent.getStringExtra("contact");
-            Contact contact = ContactRepository.parseJSON(contactJson);
-            nameView.setText(contact.getName());
-            phoneView.setText(contact.getPhone());
-            titleView.setText(contact.getTitle());
-            emailView.setText(contact.getEmail());
-            twitterView.setText(contact.getTwitterId());
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        nameView.setText(contact.getName());
+        phoneView.setText(contact.getPhone());
+        titleView.setText(contact.getTitle());
+        emailView.setText(contact.getEmail());
+        twitterView.setText(contact.getTwitterId());
     }
 
     public void selfDestruct(View view) {
@@ -51,7 +43,12 @@ public class ContactDetailActivity extends Activity {
 
     public void editContact(View view) {
         Intent intent = new Intent(getApplicationContext(), ContactEditActivity.class);
-        intent.putExtra("contact", contactJson);
+        intent.putExtra(Contact.EDIT_ID, this.contact);
+        startActivity(intent);
+    }
+
+    public void returnToContacts(View view) {
+        Intent intent = new Intent(this, ContactListActivity.class);
         startActivity(intent);
     }
 

@@ -2,7 +2,6 @@ package edu.umn.contactviewer;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -33,17 +32,15 @@ public class ContactNewActivity extends Activity {
     }
 
     public void commitContact(View view) {
-        Editor sharedPreferenceEditor = getSharedPreferences(ContactEditActivity.APP_SHARED_PREFS,
-                ContactEditActivity.MODE_PRIVATE).edit();
-        Contact contact = new Contact(String.valueOf(nameView.getText()));
-        contact.setPhone(String.valueOf(phoneView.getText()));
-        contact.setTitle(String.valueOf(titleView.getText()));
-        contact.setEmail(String.valueOf(emailView.getText()));
-        contact.setTwitterId(String.valueOf(twitterView.getText()));
+        Contact contact = new Contact();
+        contact.setName(nameView.getText().toString());
+        contact.setPhone(phoneView.getText().toString());
+        contact.setTitle(titleView.getText().toString());
+        contact.setEmail(emailView.getText().toString());
+        contact.setTwitterId(twitterView.getText().toString());
 
-        String contactJson = ContactRepository.toJSON(contact);
-        sharedPreferenceEditor.putString(contact.getEmail(), contactJson);
-        sharedPreferenceEditor.commit();
+        ContactRepository.getInstance().putContact(contact);
+
         Intent contactListIntent = new Intent(getApplicationContext(), ContactListActivity.class);
         startActivity(contactListIntent);
     }
