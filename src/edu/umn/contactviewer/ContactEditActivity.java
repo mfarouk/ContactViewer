@@ -36,8 +36,8 @@ public class ContactEditActivity extends Activity {
             nameView.setText(contact.getName());
             phoneView.setText(contact.getPhone());
             titleView.setText(contact.getTitle());
-            emailView.setText(contact.getTwitterId());
-            twitterView.setText(contact.getEmail());
+            emailView.setText(contact.getEmail());
+            twitterView.setText(contact.getTwitterId());
         }
     }
 
