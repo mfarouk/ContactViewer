@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">ContactViewer</string>
     <string name="contacts">Contacts</string>
     <string name="about">About</string>
@@ -7,6 +8,7 @@
     <string name="edit">Edit</string>
     <string name="cancel">Cancel</string>
     <string name="done">Done</string>
+    <string name="delete">Delete</string>
     <string name="new_contact">New</string>
     <string name="contact_label_name">Name</string>
     <string name="contact_label_email">Email</string>
@@ -14,5 +16,12 @@
     <string name="contact_label_phone">Phone</string>
     <string name="contact_label_twitter">Twitter</string>
     <string name="toolbar_details">Details</string>
-    <string name="contact_dynamicValue">&lt;&lt; text &gt;&gt;</string>
+    <string name="contact_dynamicValue">&lt;&lt; text >></string>
+    <string name="about_view_subheading">Presented By</string>
+    <string name="about_view_group">Pink Panthers</string>
+    <string name="about_view_member1">Evan Braaten</string>
+    <string name="about_view_member2">Farouk Althlathini</string>
+    <string name="about_view_member3">Vladimir Beliaev</string>
+    <string name="about_view_member4">Brian Stevenson</string>
+
 </resources>

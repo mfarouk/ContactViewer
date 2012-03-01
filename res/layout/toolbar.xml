@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/toolbar"
+    style="@style/Toolbar"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    style="@style/Toolbar">
-    <Button android:id="@+id/toolbar_back_button"
+    android:orientation="horizontal" >
+
+    <Button
+        android:id="@+id/toolbar_back_button"
         style="@style/ToolbarButton"
-        android:text="@string/back"
         android:layout_weight="0"
-        android:onClick="backClicked"/>
+        android:onClick="backClicked"
+        android:text="@string/back" />
 
     <TextView
         android:id="@+id/toolbar_title"
@@ -17,14 +19,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1.16"
-        android:text="Title" />
+        android:text="@string/contacts" />
 
     <Button
         android:id="@+id/toolbar_new_contact_button"
         style="@style/ToolbarButton"
         android:layout_width="wrap_content"
-        android:text="@string/new_contact"
-        android:onClick="newContact" />
+        android:onClick="newContact"
+        android:text="@string/new_contact" />
 
 </LinearLayout>
-    

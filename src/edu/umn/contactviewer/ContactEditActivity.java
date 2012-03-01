@@ -3,7 +3,6 @@ package edu.umn.contactviewer;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,7 +21,7 @@ public class ContactEditActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.contact_edit);
+        setContentView(R.layout.contact_edit);
 
         nameView = (EditText) findViewById(R.id.item_name);
         phoneView = (EditText) findViewById(R.id.item_phone);
@@ -31,8 +30,7 @@ public class ContactEditActivity extends Activity {
         twitterView = (EditText) findViewById(R.id.item_twitterId);
 
         // extract contact passed from previous activity
-        Intent intent = getIntent();
-        contact = intent.getExtras().getParcelable(Contact.EDIT_ID);
+        contact = getIntent().getExtras().getParcelable(Contact.EDIT_ID);
 
         if (contact != null) {
             nameView.setText(contact.getName());
@@ -43,9 +41,8 @@ public class ContactEditActivity extends Activity {
         }
     }
 
-    public void selfDestruct(View view) {
-        ContactEditActivity.this.finish();
-        // Destroyed
+    public void cancelClicked(View view) {
+        finish();
     }
 
     public void commitContact(View view) {
@@ -55,12 +52,9 @@ public class ContactEditActivity extends Activity {
         contact.setEmail(String.valueOf(emailView.getText()));
         contact.setTwitterId(String.valueOf(twitterView.getText()));
 
-        ContactRepository.getInstance(getBaseContext()).putContact(contact);
+        ContactRepository.getInstance(this).putContact(contact);
 
-        // return back to details
-        Intent intent = new Intent(getApplicationContext(), ContactDetailActivity.class);
-        intent.putExtra(Contact.SELECTED_ID, contact);
-        startActivity(intent);
+        finish();
     }
 
     public void deleteContact(View view) {
@@ -69,9 +63,8 @@ public class ContactEditActivity extends Activity {
         builder.setMessage("Are you sure you want delete this contact?").setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        ContactRepository.getInstance(getBaseContext()).removeContact(contact);
-                        Intent intent = new Intent(getApplicationContext(), ContactListActivity.class);
-                        startActivity(intent);
+                        ContactRepository.getInstance(ContactEditActivity.this).removeContact(contact);
+                        finish();
                     }
                 }).setNegativeButton("No", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {

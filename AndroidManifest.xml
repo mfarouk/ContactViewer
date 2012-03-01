@@ -18,31 +18,35 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
+        <activity
+            android:name="AboutActivity"
+            android:label="@string/about"
+            android:theme="@style/MnTheme" >
+        </activity>
         <activity
             android:name="ContactListActivity"
             android:label="@string/app_name"
-            android:theme="@style/MnTheme" >   
+            android:theme="@style/MnTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity 
+        <activity
             android:name="ContactDetailActivity"
             android:label="@string/app_name"
-            android:theme="@style/MnTheme">
-            </activity>
-        <activity 
+            android:theme="@style/MnTheme" >
+        </activity>
+        <activity
             android:name="ContactEditActivity"
             android:label="@string/app_name"
-            android:theme="@style/MnTheme">
-            </activity>
-        <activity 
+            android:theme="@style/MnTheme" >
+        </activity>
+        <activity
             android:name="ContactNewActivity"
             android:label="@string/app_name"
-            android:theme="@style/MnTheme">
-            </activity>
+            android:theme="@style/MnTheme" >
+        </activity>
     </application>
 
 </manifest>

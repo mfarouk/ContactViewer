@@ -1,7 +1,6 @@
 package edu.umn.contactviewer;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -26,11 +25,6 @@ public class ContactNewActivity extends Activity {
         twitterView = (EditText) findViewById(R.id.item_twitterId);
     }
 
-    public void selfDestruct(View view) {
-        ContactNewActivity.this.finish();
-        // Destroyed
-    }
-
     public void commitContact(View view) {
         Contact contact = new Contact();
         contact.setName(nameView.getText().toString());
@@ -39,9 +33,12 @@ public class ContactNewActivity extends Activity {
         contact.setEmail(emailView.getText().toString());
         contact.setTwitterId(twitterView.getText().toString());
 
-        ContactRepository.getInstance(getBaseContext()).putContact(contact);
+        ContactRepository.getInstance(this).putContact(contact);
 
-        Intent contactListIntent = new Intent(getApplicationContext(), ContactListActivity.class);
-        startActivity(contactListIntent);
+        finish();
+    }
+
+    public void cancelClicked(View view) {
+        finish();
     }
 }

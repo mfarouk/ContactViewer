@@ -2,96 +2,113 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/item_background" >
- 
-    <include layout="@layout/edit_toolbar"
+    android:background="@drawable/item_background"
+    android:orientation="vertical" >
+
+    <include
         android:layout_height="0dp"
-        android:layout_weight="0"/>
+        android:layout_weight="0"
+        layout="@layout/edit_toolbar" />
 
     <TextView
-	    android:id="@+id/textView_NameLabel"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:text="@string/contact_label_name"
-	    android:textAppearance="?android:attr/textAppearanceLarge"
-	    android:textColor="@color/text_color_black" />
-	
-	<EditText
-	    android:id="@+id/item_name"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:layout_margin="4dp"
-	    android:hint="@string/contact_label_name"
-	    android:inputType="text"
-	    android:textSize="24dp" />
-	
-	<TextView
-	    android:id="@+id/textView_TitleLabel"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:text="@string/contact_label_title"
-	    android:textAppearance="?android:attr/textAppearanceMedium"
-	    android:textColor="@color/text_color_black" />
-	
-	<EditText android:id="@+id/item_title"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:textSize="18dp"
-	    android:layout_margin="4dp"
-	    android:layout_alignParentLeft="true"
-	    android:hint="@string/contact_label_title"
-	    android:inputType="text"/>
-	
-	<TextView
-	    android:id="@+id/textView1"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:text="@string/contact_label_title"
-	    android:textAppearance="?android:attr/textAppearanceMedium" 
-	    android:textColor="@color/text_color_black" />
-	
-	<EditText android:id="@+id/item_email"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:textSize="18dp"
-	    android:layout_margin="4dp"
-	    android:layout_alignParentBottom="true"
-	    android:hint="@string/contact_label_email"
-	    android:inputType="textEmailAddress"/>
-	
-	<TextView
-	    android:id="@+id/textView2"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:text="@string/contact_label_phone"
-	    android:textAppearance="?android:attr/textAppearanceMedium"
-	    android:textColor="@color/text_color_black" />
-	
-	<EditText android:id="@+id/item_phone"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:textSize="18dp"
-	    android:layout_margin="4dp"
-	    android:layout_alignParentBottom="true"
-	    android:hint="@string/contact_label_phone"
-	    android:inputType="phone"/>
-	
-	<TextView
-	    android:id="@+id/textView3"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:text="@string/contact_label_twitter"
-	    android:textAppearance="?android:attr/textAppearanceMedium"
-	    android:textColor="@color/text_color_black" />
-	
-	<EditText android:id="@+id/item_twitterId"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:textSize="18dp"
-	    android:layout_margin="4dp"
-	    android:layout_alignParentBottom="true"
-	    android:hint="@string/contact_label_twitter"
-	    android:inputType="text"/>
+        android:id="@+id/textView_NameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/contact_label_name"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/text_color_black" />
+
+    <EditText
+        android:id="@+id/item_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:hint="@string/contact_label_name"
+        android:inputType="text"
+        android:textSize="24dp" />
+
+    <TextView
+        android:id="@+id/textView_TitleLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/contact_label_title"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/text_color_black" />
+
+    <EditText
+        android:id="@+id/item_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:hint="@string/contact_label_title"
+        android:inputType="text"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/contact_label_email"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/text_color_black" />
+
+    <EditText
+        android:id="@+id/item_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:hint="@string/contact_label_email"
+        android:inputType="textEmailAddress"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/contact_label_phone"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/text_color_black" />
+
+    <EditText
+        android:id="@+id/item_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:hint="@string/contact_label_phone"
+        android:inputType="phone"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/contact_label_twitter"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/text_color_black" />
+
+    <EditText
+        android:id="@+id/item_twitterId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:hint="@string/contact_label_twitter"
+        android:inputType="text"
+        android:textSize="18dp" />
+
+    <Button
+        android:id="@+id/delete_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="6dp"
+        android:background="@drawable/button_background"
+        android:onClick="deleteContact"
+        android:padding="8dp"
+        android:shadowColor="#000"
+        android:shadowDx="2.0"
+        android:shadowDy="2.0"
+        android:shadowRadius="2"
+        android:text="@string/delete"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp" />
 
 </LinearLayout>

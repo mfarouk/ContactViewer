@@ -3,11 +3,13 @@ package edu.umn.contactviewer;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 public class ContactDetailActivity extends Activity {
 
+    private static final String TAG = "ContactDetailActivity";
     private TextView nameView;
     private TextView phoneView;
     private TextView titleView;
@@ -29,6 +31,22 @@ public class ContactDetailActivity extends Activity {
         emailView = (TextView) findViewById(R.id.item_email);
         twitterView = (TextView) findViewById(R.id.item_twitterId);
 
+        updateView();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        contact = ContactRepository.getInstance(this).refreshContact(contact);
+        if (contact == null) {
+            Log.i(TAG, "Contact does not exist after onResume(). Finishing instead");
+            finish();
+        } else {
+            updateView();
+        }
+    }
+
+    private void updateView() {
         nameView.setText(contact.getName());
         phoneView.setText(contact.getPhone());
         titleView.setText(contact.getTitle());
@@ -36,20 +54,14 @@ public class ContactDetailActivity extends Activity {
         twitterView.setText(contact.getTwitterId());
     }
 
-    public void selfDestruct(View view) {
-        ContactDetailActivity.this.finish();
-        // Destroyed
-    }
-
     public void editContact(View view) {
         Intent intent = new Intent(getApplicationContext(), ContactEditActivity.class);
-        intent.putExtra(Contact.EDIT_ID, this.contact);
+        intent.putExtra(Contact.EDIT_ID, contact);
         startActivity(intent);
     }
 
-    public void returnToContacts(View view) {
-        Intent intent = new Intent(this, ContactListActivity.class);
-        startActivity(intent);
+    public void contactsClicked(View view) {
+        finish();
     }
 
 }

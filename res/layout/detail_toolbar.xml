@@ -1,26 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/detail_toolbar"
+    style="@style/Toolbar"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    style="@style/Toolbar">
-    
-    <Button android:id="@+id/toolbar_contacts_button"
-        style="@style/ToolbarButton"
-        android:text="@string/contacts"
-        android:layout_weight="0"
-        android:onClick="selfDestruct"/>
-    
-	<TextView android:id="@+id/toolbar_title"
-	    style="@style/ToolbarTitle"
-	    android:text="@string/toolbar_details"
-        android:layout_weight="1"/>
+    android:orientation="horizontal" >
 
-	<Button
-	    android:id="@+id/toolbar_edit_button"
-	    style="@style/ToolbarButton"
-	    android:layout_weight="0"
-	    android:text="@string/edit"
-	    android:onClick="editContact" />
+    <Button
+        android:id="@+id/toolbar_contacts_button"
+        style="@style/ToolbarButton"
+        android:layout_weight="0"
+        android:onClick="contactsClicked"
+        android:text="@string/contacts" />
+
+    <TextView
+        android:id="@+id/toolbar_title"
+        style="@style/ToolbarTitle"
+        android:layout_weight="1"
+        android:text="@string/toolbar_details" />
+
+    <Button
+        android:id="@+id/toolbar_edit_button"
+        style="@style/ToolbarButton"
+        android:layout_weight="0"
+        android:onClick="editContact"
+        android:text="@string/edit" />
+
 </LinearLayout>

@@ -1,6 +1,5 @@
 package edu.umn.contactviewer;
 
-import java.util.ArrayList;
 import java.util.List;
 import android.app.ListActivity;
 import android.content.Context;
@@ -14,20 +13,32 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * Displays a list of contacts.
  */
 public class ContactListActivity extends ListActivity {
 
-    public static final int CODE__NEW_CONTACT = 11;
-    public static final int CODE__DETAILS = 12;
+    private ContactAdapter contactAdapter;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.list);
+        initListView();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        contactAdapter.setList(ContactRepository.getInstance(this).getSortedContactList());
+        contactAdapter.notifyDataSetChanged();
+    }
 
     // Called when "New" button is clicked
     public void newContact(View view) {
         Intent contactNewIntent = new Intent(getApplicationContext(), ContactNewActivity.class);
-        startActivityForResult(contactNewIntent, CODE__NEW_CONTACT);
+        startActivity(contactNewIntent);
     }
 
     // Called when "Back" button is clicked
@@ -35,19 +46,13 @@ public class ContactListActivity extends ListActivity {
         finish();
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.list);
-        new ToolbarConfig(this, "Contacts");
-        initListView(new ArrayList<Contact>(ContactRepository.getInstance(getBaseContext()).getContacts().values()));
-    }
-
-    private void initListView(ArrayList<Contact> contacts) {
-        // TODO Sort contacts ArrayList so it always appears in the same order
-
+    private void initListView() {
         // create list
-        setListAdapter(new ContactAdapter(this, R.layout.list_item, contacts));
+        if (contactAdapter == null) {
+            contactAdapter = new ContactAdapter(this, R.layout.list_item, ContactRepository.getInstance(this)
+                    .getSortedContactList());
+            setListAdapter(contactAdapter);
+        }
         ListView lv = getListView();
         lv.setTextFilterEnabled(true);
 
@@ -55,45 +60,11 @@ public class ContactListActivity extends ListActivity {
         lv.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Contact contact = ((ContactAdapter) getListAdapter()).getItem(position);
-                Intent data = new Intent(getApplicationContext(), ContactDetailActivity.class);
-                data.putExtra(Contact.SELECTED_ID, contact);
-                startActivityForResult(data, CODE__DETAILS);
+                Intent contactDetailsIntent = new Intent(getApplicationContext(), ContactDetailActivity.class);
+                contactDetailsIntent.putExtra(Contact.SELECTED_ID, contact);
+                startActivity(contactDetailsIntent);
             }
         });
-    }
-
-    /**
-     * Handles data returned from child Activities.
-     */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // New Contact Activity Call-back handler
-        if (resultCode == RESULT_OK && requestCode == CODE__NEW_CONTACT) {
-            // make a new contact
-            Contact person = new Contact();
-            person.setName(data.getExtras().getString("name"));
-            person.setTitle(data.getExtras().getString("title"));
-            person.setPhone(data.getExtras().getString("phone"));
-            person.setEmail(data.getExtras().getString("email"));
-            person.setTwitterId(data.getExtras().getString("twitterId"));
-            Toast.makeText(getApplicationContext(), "Contact: " + person.getName(), Toast.LENGTH_SHORT).show();
-
-            ContactRepository.getInstance(getBaseContext()).putContact(person);
-            initListView(new ArrayList<Contact>(ContactRepository.getInstance(getBaseContext()).getContacts().values()));
-        }
-
-        // Details Activity Call-back handler
-        else if (requestCode == CODE__DETAILS && resultCode == Contact.CONTACT_UPDATED) {
-            Toast.makeText(getApplicationContext(), "Contact updated", Toast.LENGTH_SHORT);
-        } else if (requestCode == CODE__DETAILS && resultCode == Contact.CONTACT_DELETED) {
-            Toast.makeText(getApplicationContext(), "Contact deleted", Toast.LENGTH_SHORT);
-        }
-    }
-
-    @Override
-    public void finish() {
-        ContactRepository.getInstance(getBaseContext()).persistContacts();
-        super.finish();
     }
 
     /**
@@ -102,8 +73,13 @@ public class ContactListActivity extends ListActivity {
      */
     public class ContactAdapter extends ArrayAdapter<Contact> {
 
-        public ContactAdapter(Context context, int textViewResourceId, List<Contact> objects) {
-            super(context, textViewResourceId, objects);
+        public ContactAdapter(Context context, int textViewResourceId, List<Contact> contacts) {
+            super(context, textViewResourceId, contacts);
+        }
+
+        public void setList(List<Contact> contactList) {
+            clear();
+            addAll(contactList);
         }
 
         @Override

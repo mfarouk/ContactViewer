@@ -11,7 +11,7 @@ import android.util.Log;
  * Model class for storing a single contact.
  * 
  */
-public class Contact implements Parcelable {
+public class Contact implements Parcelable, Comparable<Contact> {
 
     private static final String TWITTER_ID_KEY = "twitterId";
     private static final String EMAIL_KEY = "email";
@@ -31,7 +31,7 @@ public class Contact implements Parcelable {
 
     public static final int CONTACT_UPDATED = 0;
     public static final int CONTACT_DELETED = 1;
-    
+
     public static final Parcelable.Creator<Contact> CREATOR = new Parcelable.Creator<Contact>() {
         public Contact createFromParcel(Parcel in) {
             return new Contact(in);
@@ -43,7 +43,8 @@ public class Contact implements Parcelable {
     };
 
     /**
-     * Used by Parcelable interface
+     * Used by Parcelable interface. Contacts are passed between Activities
+     * using Parcels.
      * 
      * @param in
      */
@@ -51,6 +52,11 @@ public class Contact implements Parcelable {
         readFromParcel(in);
     }
 
+    /**
+     * Contacts are persisted and restored from the database using JSON.
+     * 
+     * @param json
+     */
     public Contact(String json) {
         parseJSON(json);
     }
@@ -62,40 +68,6 @@ public class Contact implements Parcelable {
     public String getUUID() {
         return _uuid;
     }
-	/**
-	 * Creates a new Contact object, using the values that had previously been
-	 * saved.
-	 * 
-	 * @param savedUser
-	 * @throws JSONException
-	 */
-	public Contact(JSONObject savedUser) throws JSONException {
-		_uuid = savedUser.getString("uuid");
-		
-		if(savedUser.has("name"))		_name = savedUser.getString("name");
-		if(savedUser.has("title"))		_title = savedUser.getString("title");
-		if(savedUser.has("phone"))		_phone = savedUser.getString("phone");
-		if(savedUser.has("email"))		_email = savedUser.getString("email");
-		if(savedUser.has("twitterId"))	_twitterId = savedUser.getString("twitterId");
-	}
-
-	/**
-	 * Create a JSON representation of this Contact for persisting or passing 
-	 * to other Activities.
-	 * 
-	 * @return
-	 * @throws JSONException
-	 */
-	public JSONObject serialize() throws JSONException{
-		JSONObject saveUser = new JSONObject();
-		saveUser.put("uuid", _uuid);
-		saveUser.put("name", _name);
-		saveUser.put("title", _title);
-		saveUser.put("phone", _phone);
-		saveUser.put("email", _email);
-		saveUser.put("twitterID", _twitterId);
-		return saveUser;
-	}
 
     /**
      * Set the contact's name.
@@ -221,6 +193,26 @@ public class Contact implements Parcelable {
     }
 
     public int describeContents() {
+        return 0;
+    }
+
+    public int compareTo(Contact otherContact) {
+        if (_name != null && otherContact._name != null) {
+            return _name.compareToIgnoreCase(otherContact._name);
+        }
+        if (_email != null && otherContact._email != null) {
+            return _email.compareToIgnoreCase(otherContact._email);
+        }
+        if (_twitterId != null && otherContact._twitterId != null) {
+            return _twitterId.compareToIgnoreCase(otherContact._twitterId);
+        }
+        if (_phone != null && otherContact._phone != null) {
+            return _phone.compareToIgnoreCase(otherContact._phone);
+        }
+        if (_title != null && otherContact._title != null) {
+            return _title.compareToIgnoreCase(otherContact._title);
+        }
+
         return 0;
     }
 
