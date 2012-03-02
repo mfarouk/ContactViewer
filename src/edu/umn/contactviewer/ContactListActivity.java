@@ -24,7 +24,7 @@ public class ContactListActivity extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.list);
+        setContentView(R.layout.list_screen);
         initListView();
     }
 
@@ -79,7 +79,9 @@ public class ContactListActivity extends ListActivity {
 
         public void setList(List<Contact> contactList) {
             clear();
-            addAll(contactList);
+            for (Contact contact : contactList) {
+                add(contact);
+            }
         }
 
         @Override

@@ -29,9 +29,6 @@ public class Contact implements Parcelable, Comparable<Contact> {
     private String _email;
     private String _twitterId;
 
-    public static final int CONTACT_UPDATED = 0;
-    public static final int CONTACT_DELETED = 1;
-
     public static final Parcelable.Creator<Contact> CREATOR = new Parcelable.Creator<Contact>() {
         public Contact createFromParcel(Parcel in) {
             return new Contact(in);
@@ -181,18 +178,24 @@ public class Contact implements Parcelable, Comparable<Contact> {
         JSONObject jsonObject = null;
         try {
             jsonObject = new JSONObject(json);
-            if(jsonObject.has(UUID_KEY))
-            _uuid = jsonObject.getString(UUID_KEY);
-            if(jsonObject.has(NAME_KEY)) 
-            _name = jsonObject.getString(NAME_KEY);
-            if(jsonObject.has(TITLE_KEY))
-            _title = jsonObject.getString(TITLE_KEY);
-            if(jsonObject.has(EMAIL_KEY))
-            _email = jsonObject.getString(EMAIL_KEY);
-            if(jsonObject.has(PHONE_KEY))
-            _phone = jsonObject.getString(PHONE_KEY);
-            if(jsonObject.has(TWITTER_ID_KEY))
-            _twitterId = jsonObject.getString(TWITTER_ID_KEY);
+            if (jsonObject.has(UUID_KEY)) {
+                _uuid = jsonObject.getString(UUID_KEY);
+            }
+            if (jsonObject.has(NAME_KEY)) {
+                _name = jsonObject.getString(NAME_KEY);
+            }
+            if (jsonObject.has(TITLE_KEY)) {
+                _title = jsonObject.getString(TITLE_KEY);
+            }
+            if (jsonObject.has(EMAIL_KEY)) {
+                _email = jsonObject.getString(EMAIL_KEY);
+            }
+            if (jsonObject.has(PHONE_KEY)) {
+                _phone = jsonObject.getString(PHONE_KEY);
+            }
+            if (jsonObject.has(TWITTER_ID_KEY)) {
+                _twitterId = jsonObject.getString(TWITTER_ID_KEY);
+            }
         } catch (JSONException e) {
             Log.e("Contact Display", "Error restoring contact from JSON: " + jsonObject, e);
         }

@@ -16,7 +16,7 @@ public class ContactNewActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.contact_new);
+        this.setContentView(R.layout.new_screen);
 
         nameView = (EditText) findViewById(R.id.item_name);
         phoneView = (EditText) findViewById(R.id.item_phone);

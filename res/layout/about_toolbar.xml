@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/about_toolbar"
+    style="@style/Toolbar"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+
+    <Button
+        android:id="@+id/toolbar_about_back_button"
+        style="@style/ToolbarButton"
+        android:layout_weight="0"
+        android:onClick="backClicked"
+        android:text="@string/back" />
+
+    <TextView
+        android:id="@+id/toolbar_about_title"
+        style="@style/ToolbarTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.16"
+        android:text="@string/about" />
+
+</LinearLayout>

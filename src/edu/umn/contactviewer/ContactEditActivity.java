@@ -21,7 +21,7 @@ public class ContactEditActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.contact_edit);
+        setContentView(R.layout.edit_screen);
 
         nameView = (EditText) findViewById(R.id.item_name);
         phoneView = (EditText) findViewById(R.id.item_phone);
@@ -60,13 +60,13 @@ public class ContactEditActivity extends Activity {
     public void deleteContact(View view) {
         Log.i(TAG, "Deleting a contact!");
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Are you sure you want delete this contact?").setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        builder.setMessage(R.string.delete_confirmation).setCancelable(false)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         ContactRepository.getInstance(ContactEditActivity.this).removeContact(contact);
                         finish();
                     }
-                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                }).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
                     }

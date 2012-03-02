@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        android:text="Name"
+        android:text="@string/contact_label_name"
         android:textSize="24dp"
         android:textStyle="bold" />
 
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="4dp"
-        android:text="Title"
+        android:text="@string/title"
         android:textSize="18dp"
         android:textStyle="italic" />
 
@@ -30,6 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
+        android:contentDescription="@string/item_icon_description"
         android:src="@android:drawable/ic_media_play" />
 
     <TextView
@@ -39,7 +40,7 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="4dp"
         android:layout_toLeftOf="@id/item_icon"
-        android:text="Phone"
+        android:text="@string/phone"
         android:textSize="18dp" />
 
 </RelativeLayout>

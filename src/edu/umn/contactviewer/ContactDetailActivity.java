@@ -23,7 +23,7 @@ public class ContactDetailActivity extends Activity {
 
         contact = getIntent().getExtras().getParcelable(Contact.SELECTED_ID);
 
-        this.setContentView(R.layout.contact_detail);
+        this.setContentView(R.layout.detail_screen);
 
         nameView = (TextView) findViewById(R.id.item_name);
         phoneView = (TextView) findViewById(R.id.item_phone);

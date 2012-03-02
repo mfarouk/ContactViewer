@@ -33,54 +33,56 @@ public class ContactRepository {
         return _instance;
     }
 
-    private void loadContacts() {
-        contacts = new HashMap<String, Contact>();
-        Map<String, ?> contactsJson = getSharedPreferences(_baseContext).getAll();
-        for (Entry<String, ?> contactJson : contactsJson.entrySet()) {
-            contacts.put(contactJson.getKey(), new Contact((String) contactJson.getValue()));
-        }
-    }
-
     public List<Contact> getSortedContactList() {
-        if (contacts == null) {
-            loadContacts();
-        }
+        loadContacts();
         List<Contact> sortedContacts = new ArrayList<Contact>(contacts.values());
         Collections.sort(sortedContacts);
         return sortedContacts;
     }
 
     public HashMap<String, Contact> getContacts() {
-        if (contacts == null) {
-            loadContacts();
-        }
+        loadContacts();
         return contacts;
     }
-
-    public void persistContacts() {
-        Editor editor = getSharedPreferences(_baseContext).edit();
-        for (Contact contact : contacts.values()) {
-            editor.putString(contact.getUUID(), contact.toJSON());
+    
+    private void loadContacts() {
+        if (contacts == null) {
+            contacts = new HashMap<String, Contact>();
+            Map<String, ?> contactsJson = getSharedPreferences(_baseContext).getAll();
+            for (Entry<String, ?> contactJson : contactsJson.entrySet()) {
+                contacts.put(contactJson.getKey(), new Contact((String) contactJson.getValue()));
+            }
         }
-        editor.commit();
+    }
+    
+    public Contact refreshContact(Contact contact) {
+        return contacts.get(contact.getUUID());
     }
 
     public void removeContact(Contact contact) {
         contacts.remove(contact.getUUID());
-        persistContacts();
+        Editor database = open();
+        database.remove(contact.getUUID());
+        commit(database);
     }
 
     public void putContact(Contact contact) {
         contacts.put(contact.getUUID(), contact);
-        persistContacts();
+        Editor database = open();
+        database.putString(contact.getUUID(), contact.toJSON());
+        commit(database);
+    }
+    
+    private Editor open() {
+        return getSharedPreferences(_baseContext).edit();
+    }
+    
+    private void commit(Editor editor) {
+        editor.commit();
     }
 
     private SharedPreferences getSharedPreferences(Context baseContext) {
         return PreferenceManager.getDefaultSharedPreferences(baseContext);
-    }
-
-    public Contact refreshContact(Contact contact) {
-        return contacts.get(contact.getUUID());
     }
 
 }

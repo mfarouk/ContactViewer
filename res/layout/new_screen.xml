@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <include layout="@layout/new_toolbar" />
+
+    <ScrollView
+        android:id="@+id/edit_scrollview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/item_background"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/textView_NameLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/contact_label_name"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/text_color_black" />
+
+            <EditText
+                android:id="@+id/item_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:hint="@string/contact_label_name"
+                android:inputType="text"
+                android:textSize="24dp" />
+
+            <TextView
+                android:id="@+id/textView_TitleLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/contact_label_title"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/text_color_black" />
+
+            <EditText
+                android:id="@+id/item_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:hint="@string/contact_label_title"
+                android:inputType="text"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/contact_label_email"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/text_color_black" />
+
+            <EditText
+                android:id="@+id/item_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:hint="@string/contact_label_email"
+                android:inputType="textEmailAddress"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/contact_label_phone"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/text_color_black" />
+
+            <EditText
+                android:id="@+id/item_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:hint="@string/contact_label_phone"
+                android:inputType="phone"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/contact_label_twitter"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/text_color_black" />
+
+            <EditText
+                android:id="@+id/item_twitterId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:hint="@string/contact_label_twitter"
+                android:inputType="text"
+                android:textSize="18dp" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
