@@ -18,7 +18,7 @@ public class Contact implements Parcelable, Comparable<Contact> {
     private static final String TITLE_KEY = "title";
     private static final String PHONE_KEY = "phone";
     private static final String NAME_KEY = "name";
-    private static final String UUID_KEY = "uuid";
+    public static final String UUID_KEY = "_id";
     public static String EDIT_ID = "contactToEdit";
     public static String SELECTED_ID = "selectedContact";
 
@@ -161,7 +161,6 @@ public class Contact implements Parcelable, Comparable<Contact> {
     public String toJSON() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(UUID_KEY, getUUID());
             jsonObject.put(NAME_KEY, getName());
             jsonObject.put(PHONE_KEY, getPhone());
             jsonObject.put(TITLE_KEY, getTitle());
