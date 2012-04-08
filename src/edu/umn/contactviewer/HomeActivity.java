@@ -1,5 +1,6 @@
 package edu.umn.contactviewer;
 
+import edu.umn.contactviewer.storage.ContactRepository;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,7 +19,7 @@ public class HomeActivity extends Activity implements OnClickListener {
         setContentView(R.layout.main_screen);
         findViewById(R.id.contacts_button).setOnClickListener(this);
         findViewById(R.id.about_button).setOnClickListener(this);
-        ContactRepository.getInstance(null);
+        ContactRepository.initialize();
     }
 
     public void onClick(View v) {

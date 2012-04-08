@@ -1,6 +1,9 @@
 package edu.umn.contactviewer;
 
+import edu.umn.contactviewer.storage.Callback;
+import edu.umn.contactviewer.storage.ContactRepository;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -33,9 +36,18 @@ public class ContactNewActivity extends Activity {
         contact.setEmail(emailView.getText().toString());
         contact.setTwitterId(twitterView.getText().toString());
 
-        ContactRepository.getInstance(this).putContact(contact);
+        final ProgressDialog spinner = ProgressDialog.show(this, "Working..", "Committing contact...", true, false);
+        ContactRepository.getInstance(this).putContact(contact, new Callback<Void>() {
+            public void onSuccess(Void result) {
+                spinner.dismiss();
+                finish();
+            }
 
-        finish();
+            public void onFailure(Void result) {
+                spinner.dismiss();
+                finish();
+            }
+        });
     }
 
     public void cancelClicked(View view) {

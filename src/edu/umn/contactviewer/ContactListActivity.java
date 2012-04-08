@@ -1,6 +1,7 @@
 package edu.umn.contactviewer;
 
 import java.util.List;
+import edu.umn.contactviewer.storage.ContactRepository;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;

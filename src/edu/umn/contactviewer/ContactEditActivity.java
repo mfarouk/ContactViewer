@@ -1,7 +1,10 @@
 package edu.umn.contactviewer;
 
+import edu.umn.contactviewer.storage.Callback;
+import edu.umn.contactviewer.storage.ContactRepository;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
@@ -52,9 +55,18 @@ public class ContactEditActivity extends Activity {
         contact.setEmail(String.valueOf(emailView.getText()));
         contact.setTwitterId(String.valueOf(twitterView.getText()));
 
-        ContactRepository.getInstance(this).putContact(contact);
+        final ProgressDialog spinner = ProgressDialog.show(this, "Working..", "Committing contact...", true, false);
+        ContactRepository.getInstance(this).putContact(contact, new Callback<Void>() {
+            public void onSuccess(Void result) {
+                spinner.dismiss();
+                finish();
+            }
 
-        finish();
+            public void onFailure(Void result) {
+                spinner.dismiss();
+                finish();
+            }
+        });
     }
 
     public void deleteContact(View view) {
@@ -63,8 +75,20 @@ public class ContactEditActivity extends Activity {
         builder.setMessage(R.string.delete_confirmation).setCancelable(false)
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        ContactRepository.getInstance(ContactEditActivity.this).removeContact(contact);
-                        finish();
+                        final ProgressDialog spinner = ProgressDialog.show(ContactEditActivity.this, "Working..",
+                                "Deleting contact...", true, false);
+                        ContactRepository.getInstance(ContactEditActivity.this).removeContact(contact,
+                                new Callback<Void>() {
+                                    public void onSuccess(Void result) {
+                                        spinner.dismiss();
+                                        finish();
+                                    }
+
+                                    public void onFailure(Void result) {
+                                        spinner.dismiss();
+                                        finish();
+                                    }
+                                });
                     }
                 }).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
