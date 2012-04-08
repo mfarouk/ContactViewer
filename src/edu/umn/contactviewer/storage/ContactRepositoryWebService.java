@@ -12,6 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import android.net.http.AndroidHttpClient;
+import android.os.AsyncTask;
 import android.util.Log;
 import edu.umn.contactviewer.Contact;
 
@@ -21,22 +22,31 @@ public class ContactRepositoryWebService {
     static final String API_KEY = "pinkpanthers";
 
     public static Map<String, String> readContacts() {
-        AndroidHttpClient client = AndroidHttpClient.newInstance("Android", null);
-        String response = null;
-
-        HttpGet get = new HttpGet(ContactRepositoryWebService.URL_BASE + "?key=" + ContactRepositoryWebService.API_KEY);
-
-        try {
-            response = client.execute(get, new BasicResponseHandler());
-        } catch (Exception e) {
-            Log.e(ContactRepositoryWebService.class.getName(), e.getMessage());
-        } finally {
-            client.close();
-        }
-
         Map<String, String> contactMap = new HashMap<String, String>();
+        
+        AsyncTask<Void, Void, String> result = new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... v) {
+                AndroidHttpClient client = AndroidHttpClient.newInstance("Android", null);
+                String response = null;
+
+                HttpGet get = new HttpGet(ContactRepositoryWebService.URL_BASE + "?key="
+                        + ContactRepositoryWebService.API_KEY);
+
+                try {
+                    response = client.execute(get, new BasicResponseHandler());
+                } catch (Exception e) {
+                    Log.e(ContactRepositoryWebService.class.getName(), e.getMessage());
+                } finally {
+                    client.close();
+                }
+
+                return response;
+            }
+        }.execute();
+
         try {
-            JSONObject resultJson = (JSONObject) new JSONTokener(response).nextValue();
+            JSONObject resultJson = (JSONObject) new JSONTokener(result.get()).nextValue();
             JSONArray contactsArray = resultJson.getJSONArray("contacts");
             for (int i = 0; i < contactsArray.length(); i++) {
                 JSONObject contact = contactsArray.getJSONObject(i);
